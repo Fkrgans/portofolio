@@ -1,187 +1,212 @@
-# Portfolio Dev
+🖤 Ahmad Fikri — Professional Developer Portfolio
 
-Portfolio Dev adalah website portfolio interaktif berbasis React + Vite untuk menampilkan profil, project case study, experience, tech stack, GitHub stats, dan terminal chat AI.
+📌 Ringkasan Singkat
 
-## Gambaran Singkat
+Selamat datang di repositori portofolio pribadi Ahmad Fikri. Portofolio ini dirancang dengan gaya Hitam Elegan & Putih (Minimalis Modern) untuk memamerkan keahlian dan proyek di bidang rekayasa teknologi, khususnya Internet of Things (IoT), Frontend Development, Artificial Intelligence (AI), dan fondasi Cybersecurity.
 
-Alur utamanya dibuat sederhana: pengunjung masuk ke halaman utama, membaca profil, melihat project dan detailnya, mengecek experience serta tech stack, lalu bisa mencoba terminal chat untuk navigasi cepat atau membaca konteks project tertentu.
+🧠 Tech Stack & Instrumentasi
 
-Fitur utamanya:
+💼 Proyek Unggulan
 
-- Animasi modern dengan GSAP + ScrollTrigger.
-- Smooth scrolling dengan Lenis.
-- Project gallery dengan detail berbasis route/modal.
-- Chat widget gaya terminal dengan command lokal seperti `help`, `ls`, dan `cat <slug>`.
-- Section registry terpusat supaya navigasi dan chat tetap konsisten.
+🌊 Flood Detection System — Sistem deteksi dini potensi bencana banjir berbasis mikrokomputer Raspberry Pi 3.
 
-## Tech Stack
+⚖️ Smart Digital Scale — Timbangan digital berbasis ESP8266 yang terhubung ke internet untuk monitoring data real-time secara online.
 
-- React 19
-- Vite
-- Tailwind CSS
-- GSAP + ScrollTrigger
-- Lenis
-- React Router
+👁️ Real-time Object Detection — Implementasi model kecerdasan buatan YOLOv8 untuk mendeteksi objek secara instan melalui webcam.
 
-## Prasyarat
+📂 Struktur Folder Proyek
 
-- Node.js 22 atau lebih baru
-- npm 10 atau lebih baru
+Portfolio-dev/
+├─ .editorconfig
+├─ .gitignore
+├─ .hintrc
+├─ .npmrc
+├─ .env
+├─ build/                 # Hasil produksi, bisa dibersihkan jika perlu
+├─ build.zip              # Backup hasil build
+├─ index.html
+├─ package.json
+├─ package-lock.json
+├─ postcss.config.js
+├─ public/
+│  ├─ assets/
+│  │  └─ images/          # Seluruh asset gambar portfolio
+│  └─ manifest.json
+├─ README.md
+├─ src/
+│  ├─ App.jsx
+│  ├─ index.css           # Global style dan konfigurasi Tailwind
+│  ├─ index.js            # Entry point React
+│  ├─ main.jsx            # Inisialisasi Vite / React
+│  ├─ components/         # Komponen UI modular
+│  │  ├─ AboutSection.jsx
+│  │  ├─ ChatLauncher.jsx
+│  │  ├─ ChatWidget.jsx
+│  │  ├─ Cursor.jsx
+│  │  ├─ Footer.jsx
+│  │  ├─ GitHubStats.jsx
+│  │  ├─ HackathonDetailModal.jsx
+│  │  ├─ HeroSection.jsx
+│  │  ├─ LightRays.css
+│  │  ├─ LightRays.jsx
+│  │  ├─ Magnetic.jsx
+│  │  ├─ MarqueeBanner.jsx
+│  │  ├─ Navbar.jsx
+│  │  ├─ NoiseOverlay.jsx
+│  │  ├─ Preloader.jsx
+│  │  ├─ ProfessionalExperience.jsx
+│  │  ├─ ProjectGallery.jsx
+│  │  ├─ projects/        # Sub-komponen proyek detail
+│  │  ├─ TechnicalCapabilities.jsx
+│  │  └─ TechStack.jsx
+│  ├─ data/               # Data konten portofolio
+│  │  ├─ portfolioData.js
+│  │  ├─ projectDetailsData.js
+│  │  ├─ projectMeta.js
+│  │  └─ sectionRegistry.js
+│  ├─ hooks/              # Custom hooks React
+│  │  ├─ useLenis.js
+│  │  └─ useScrollToGallery.js
+│  ├─ pages/
+│  │  └─ Home.jsx         # Halaman utama
+│  ├─ projectDetails/     # Halaman detail setiap proyek
+│  │  ├─ CoffeeScaleDetail.jsx
+│  │  ├─ DiabetesClassificationDetail.jsx
+│  │  ├─ FinancialAssistantDetail.jsx
+│  │  ├─ FloodDetectionSystemDetail.jsx
+│  │  ├─ FloodSegmenDetail.jsx
+│  │  ├─ ImageClasDetail.jsx
+│  │  ├─ LeadsUpDetail.jsx
+│  │  ├─ LostAndFoundDetail.jsx
+│  │  ├─ PolsekRembangDetail.jsx
+│  │  ├─ projectRegistry.js
+│  │  ├─ QMealDetail.jsx
+│  │  └─ SmartScaleDetail.jsx
+│  ├─ services/           # Logika API & helper asisten AI
+│  │  ├─ aiContext.js
+│  │  ├─ cerebras.js
+│  │  ├─ intentRouter.js
+│  │  └─ responseSanitizer.js
+│  └─ utils/              # Utilitas kecil untuk animasi
+│     ├─ easing.js
+│     └─ gsapAnimate.jsx
+├─ tailwind.config.js
+└─ vite.config.js
 
-## Mulai Dari Nol
+⚙️ Alur Kerja & Arsitektur Aplikasi
 
-### 1. Clone repository
+Berikut adalah gambaran bagaimana komponen-komponen di dalam proyek ini saling berinteraksi, termasuk integrasi widget chat AI pintar menggunakan Cerebras API:
 
-```bash
-git clone https://github.com/zickrian/Portfolio-dev.git
+graph TD
+    User([Pengunjung Website]) -->|Interaksi UI| Home[pages/Home.jsx]
+    
+    subgraph Core_Application [Aplikasi React & Vite]
+        Home -->|Rendering Tata Letak| Components[src/components/]
+        Components -->|Navbar & Hero| HeroSection[HeroSection.jsx]
+        Components -->|Galeri Proyek| Gallery[AboutSection / Projects]
+        Components -->|Smooth Scrolling| LenisHook[hooks/useLenis.js]
+        
+        Gallery -->|Membaca Data Statis| LocalData[(data/portfolioData.js)]
+    end
+
+    subgraph AI_Integration [Asisten AI Interaktif]
+        Components -->|Pemicu Chat| ChatWidget[ChatWidget.jsx]
+        ChatWidget -->|Kirim Prompt| CerebrasService[services/cerebras.js]
+        CerebrasService -->|Inference Request| CerebrasAPI[[Cerebras Cloud API]]
+    end
+
+    CerebrasAPI -.->|Respon AI Cepat| CerebrasService
+    CerebrasService -.->|Tampilkan Pesan| ChatWidget
+
+
+🎯 Flowchart Pengembangan (Development Lifecycle)
+
+Gunakan diagram alur berikut sebagai panduan ketika Anda ingin memperbarui atau mengembangkan portofolio ini dari lokal hingga siap di-deploy:
+
+flowchart TD
+    Start([Mulai]) --> Clone[1. Clone Repositori dari GitHub]
+    Clone --> Install[2. Jalankan 'npm install' untuk Pasang Dependensi]
+    Install --> DevServer[3. Jalankan Server Lokal: 'npm run dev']
+    
+    DevServer --> Decision{Ada Perubahan Konten/Fitur?}
+    
+    Decision -->|Ya, Ubah Data Proyek| EditData[Edit src/data/portfolioData.js]
+    Decision -->|Ya, Ubah Tampilan UI| EditComponent[Edit file di src/components/]
+    
+    EditData --> LivePreview[Verifikasi Hasil di http://localhost:5173]
+    EditComponent --> LivePreview
+    LivePreview --> Decision
+    
+    Decision -->|Tidak, Sudah Siap| Build[4. Jalankan Kompilasi: 'npm run build']
+    Build --> Deploy[5. Deploy Folder 'dist/' ke Platform Hosting]
+    Deploy --> End([Selesai / Website Live])
+
+    style Start fill:#000,stroke:#fff,stroke-width:2px,color:#fff
+    style End fill:#000,stroke:#fff,stroke-width:2px,color:#fff
+    style Decision fill:#333,stroke:#fff,color:#fff
+
+
+🛠️ Panduan Instalasi Lokal
+
+Ikuti langkah-langkah di bawah ini untuk memasang proyek di komputer Anda secara lokal:
+
+Clone Repositori
+
+git clone https://github.com/ahmadfikri/your-portfolio-repo.git
 cd Portfolio-dev
-```
 
-### 2. Install dependency
 
-```bash
+Instal Dependensi
+
 npm install
-```
 
-### 3. Tambahkan environment variable untuk AI chat
 
-Buat file `.env` di root project, lalu isi salah satu variabel berikut:
+Jalankan Mode Pengembangan
 
-```env
-VITE_CEREBRAS_API_KEY=your_key_here
-```
-
-Kalau kamu masih memakai format lama, repo ini juga tetap membaca:
-
-```env
-REACT_APP_CEREBRAS_API_KEY=your_key_here
-```
-
-Catatan:
-
-- Kalau tidak ada API key, command lokal tetap jalan normal.
-- AI response hanya aktif kalau salah satu key di atas tersedia.
-
-### 4. Jalankan development server
-
-```bash
 npm run dev
-```
 
-Buka URL yang ditampilkan Vite, biasanya `http://localhost:5173`.
 
-### 5. Build production
+Buka http://localhost:5173 di peramban Anda untuk melihat hasilnya.
 
-```bash
+Kompilasi untuk Produksi
+
 npm run build
-```
 
-Hasil build akan masuk ke folder `build/`.
 
-### 6. Preview hasil build
+📸 Panduan Manajemen Gambar (Assets)
 
-```bash
-npm run preview
-```
+Letakkan semua file visual pendukung di dalam folder public/assets/images/.
 
-### 7. Cek sebelum deploy
+Daftar path file rekomendasi:
 
-```bash
-npm run check
-```
+Profil Utama: /assets/images/profile.jpg
 
-Perintah ini menjalankan build production lalu audit dependency production.
+Deteksi Banjir: /assets/images/flood-detection-system.jpg
 
-## Script Yang Tersedia
+Timbangan Digital: /assets/images/smart-digital-scale.jpg
 
-- `npm run dev` untuk menjalankan development server.
-- `npm run start` sama seperti `npm run dev`.
-- `npm run build` untuk menghasilkan production build.
-- `npm run preview` untuk preview hasil build lokal.
-- `npm run check` untuk build + audit dependency.
+Deteksi Objek AI: /assets/images/real-time-object-detection.jpg
 
-## Struktur Project
+💡 Tips: Vite membaca folder public langsung dari root /. Sehingga di dalam kode, panggil gambar cukup menggunakan path /assets/images/nama-file.jpg.
 
-```text
-.
-├── index.html
-├── public/
-├── src/
-│   ├── components/
-│   ├── components/projects/
-│   ├── data/
-│   ├── hooks/
-│   ├── pages/
-│   ├── projectDetails/
-│   ├── services/
-│   └── utils/
-├── tailwind.config.js
-├── vite.config.js
-└── build/
-```
+🤝 Cara Berkontribusi
 
-## Cara Kerja Konten
+Lakukan Fork pada repositori ini.
 
-Kalau kamu ingin mengubah isi portfolio tanpa mengutak-atik layout besar, fokus ke file berikut:
+Buat branch fitur baru (git checkout -b feature/FiturKeren).
 
-- Profile, experience, tech stack, projects, achievements, dan capabilities: `src/data/portfolioData.js`
-- Metadata kartu project di gallery: `src/data/projectMeta.js`
-- Konten detail project yang dipakai chat `cat <slug>`: `src/data/projectDetailsData.js`
-- Daftar section yang bisa di-scroll lewat chat dan navbar: `src/data/sectionRegistry.js`
-- Detail route custom per project: `src/projectDetails/projectRegistry.js`
+Lakukan perubahan data proyek di folder src/data/ atau perbaiki antarmuka komponen.
 
-### Menambah project baru
+Jalankan npm run dev untuk memastikan tidak ada error yang terjadi.
 
-1. Tambahkan metadata project di `src/data/projectMeta.js`.
-2. Tambahkan data detail dengan `slug` yang sama di `src/data/projectDetailsData.js`.
-3. Jika butuh tampilan detail custom, buat komponen baru di `src/projectDetails/`.
-4. Daftarkan komponen tersebut di `src/projectDetails/projectRegistry.js`.
+Commit perubahan Anda (git commit -m 'Menambahkan fitur deteksi AI').
 
-### Menambah section baru
+Push ke branch Anda (git push origin feature/FiturKeren) dan buat Pull Request.
 
-1. Tambahkan section ke `src/data/sectionRegistry.js`.
-2. Pastikan komponen memiliki `elementId` yang cocok.
-3. Chat widget dan intent router akan ikut membaca section baru itu.
+🚀 Deployment
 
-## Chat Widget
+Jalankan perintah npm run build untuk menghasilkan folder kompilasi (biasanya bernama dist atau build).
 
-Chat widget punya dua mode:
+Deploy folder tersebut ke layanan hosting statis favorit Anda seperti Vercel, Netlify, atau GitHub Pages.
 
-- Command lokal selalu aktif.
-- AI response aktif jika API key Cerebras tersedia.
-
-Command yang didukung:
-
-- `help`
-- `ls`
-- `cat <slug>`
-- `history`
-- `clear`
-
-Kalau kamu ingin menyesuaikan perilaku AI atau konteks section, cek `src/services/cerebras.js`, `src/services/aiContext.js`, dan `src/data/sectionRegistry.js`.
-
-## Asset Penting
-
-- Foto about: `public/profilee.webp`
-- Foto preload hero: `public/profile.webp`
-- Gambar OG/Twitter: `public/og-icon.png`
-- Galeri hackathon: `public/hackathon-base/`
-- CV: `public/cv.pdf`
-
-## Deploy
-
-Deploy hasil folder `build/` ke hosting statis seperti Netlify, Vercel, atau Cloudflare Pages.
-
-Karena ini SPA, pastikan rewrite/fallback route diarahkan ke `index.html` supaya route seperti detail project tetap aman saat dibuka langsung.
-
-## Troubleshooting
-
-- AI tidak merespons: cek `.env`, pastikan API key terisi, lalu restart dev server.
-- Command chat jalan tapi AI gagal: biasanya karena key, limit, atau koneksi jaringan.
-- Build tidak muncul di folder yang diharapkan: hasilnya ada di `build/`, bukan `dist/`.
-- CV tidak sesuai: ganti file `public/cv.pdf`.
-- GitHub stats kosong: kemungkinan kena rate limit API publik.
-
-## License
-
-Repository ini belum menyertakan lisensi open-source.
+Catatan khusus GitHub Pages: Jika Anda men-deploy ke sub-path GitHub Pages, pastikan parameter base pada vite.config.js sudah disesuaikan dengan nama repositori Anda.
