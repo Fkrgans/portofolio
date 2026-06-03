@@ -121,8 +121,8 @@ const Navbar = memo(function Navbar() {
           className={`group pointer-events-auto flex items-center gap-3 px-5 py-2.5 rounded-full backdrop-blur-md border transition-all duration-500 cursor-pointer ${isOnDarkSection ? 'bg-black/25 border-white/25 shadow-[0_8px_24px_rgba(0,0,0,0.22)]' : scrolled ? 'bg-white/80 border-black/5 shadow-[0_8px_32px_rgba(0,0,0,0.04)]' : 'bg-transparent border-transparent'}`}
         >
 
-          <span className={`text-sm font-black tracking-[0.16em] md:tracking-[0.2em] uppercase transition-colors duration-300 ${isOnDarkSection ? 'text-white' : 'text-black'}`}>
-            Zickrian
+          <span className="text-sm font-black tracking-[0.16em] md:tracking-[0.2em] uppercase transition-colors duration-300 text-white">
+            Fkr-Dev
           </span>
         </div>
       </Magnetic>

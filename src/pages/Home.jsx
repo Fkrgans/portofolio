@@ -7,6 +7,7 @@ import HeroSection from '../components/HeroSection';
 import ChatLauncher from '../components/ChatLauncher';
 import useLenis from '../hooks/useLenis';
 import useScrollToGallery from '../hooks/useScrollToGallery';
+import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 const MarqueeBanner = lazy(() => import('../components/MarqueeBanner'));
 const AboutSection = lazy(() => import('../components/AboutSection'));
@@ -45,7 +46,7 @@ export default function Home() {
   // Preload profile image (optimized WebP with JPEG fallback)
   useEffect(() => {
     const profileImg = new Image();
-    profileImg.src = "/profile.webp";
+    profileImg.src = PORTFOLIO_DATA.assets.profileImage;
   }, []);
 
   // Manage body overflow based on scroll lock
@@ -58,6 +59,18 @@ export default function Home() {
       document.body.style.overflow = '';
     }
   }, [isScrollLocked]);
+
+  // Fallback: jika preloader macet, lepas loading setelah beberapa detik
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const fallbackTimer = setTimeout(() => {
+      setIsLoading(false);
+      setIsScrollLocked(false);
+    }, 7000);
+
+    return () => clearTimeout(fallbackTimer);
+  }, [isLoading]);
 
   const handleOpenProject = useCallback((project) => {
     if (!project?.slug) return;
@@ -88,8 +101,8 @@ export default function Home() {
       <Suspense fallback={null}><MarqueeBanner /></Suspense>
       <Suspense fallback={null}><AboutSection /></Suspense>
 
-      <div id="project-section" ref={galleryRef} className="bg-neutral-900">
-        <Suspense fallback={<div className="h-screen bg-neutral-900" />}>
+      <div id="project-section" ref={galleryRef} className="bg-[#050608]">
+        <Suspense fallback={<div className="h-screen bg-[#050608]" />}>
           <ProjectGallery onOpenProject={handleOpenProject} />
         </Suspense>
       </div>

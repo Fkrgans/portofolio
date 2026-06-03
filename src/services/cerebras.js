@@ -1,12 +1,54 @@
 import { generateSystemPrompt, buildScopedContext } from './aiContext';
 
-const API_KEY = (
+const CEREBRAS_API_KEY = (
     import.meta.env.VITE_CEREBRAS_API_KEY ||
     import.meta.env.REACT_APP_CEREBRAS_API_KEY ||
     ''
 ).trim();
 
+const HUGGINGFACE_API_KEY = (
+    import.meta.env.VITE_HUGGINGFACE_API_KEY ||
+    ''
+).trim();
+
+const HUGGINGFACE_MODEL = import.meta.env.VITE_HUGGINGFACE_MODEL || 'gpt2';
 const CEREBRAS_CHAT_COMPLETIONS_URL = 'https://api.cerebras.ai/v1/chat/completions';
+
+async function queryHuggingFace(prompt) {
+    const response = await fetch(`https://api-inference.huggingface.co/models/${HUGGINGFACE_MODEL}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${HUGGINGFACE_API_KEY}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            inputs: prompt,
+            options: {
+                wait_for_model: true,
+                use_cache: false,
+            },
+        }),
+    });
+
+    if (!response.ok) {
+        const error = new Error(`Hugging Face error: ${response.status}`);
+        error.status = response.status;
+        throw error;
+    }
+
+    const data = await response.json();
+    const text = typeof data === 'string'
+        ? data
+        : data?.generated_text || data?.[0]?.generated_text || data?.error || '';
+
+    if (!text) {
+        const error = new Error('Hugging Face returned no text');
+        error.status = response.status;
+        throw error;
+    }
+
+    return text;
+}
 
 // Error classification for granular UI feedback
 const classifyError = (error) => {
@@ -84,13 +126,9 @@ async function* parseOpenAICompatibleStream(response) {
  * @param {Array} messages - Chat messages (already limited by caller)
  * @returns {AsyncGenerator<string>} - Yields text content chunks
  */
-export async function* streamCerebras(messages) {
-    if (!API_KEY) {
-        const error = new Error('Missing API key');
-        error.status = 401;
-        throw classifyError(error);
-    }
+const OFFLINE_RESPONSE = 'FKR Bot is running in offline mode. Without an AI API key or when the API is unreachable, I can still answer basic portfolio questions and show general info about the site.';
 
+export async function* streamCerebras(messages) {
     const systemPrompt = generateSystemPrompt();
     const latestUserMessage = [...messages].reverse().find(m => m.role === 'user')?.content || '';
     const scopedContext = buildScopedContext(latestUserMessage);
@@ -101,11 +139,40 @@ export async function* streamCerebras(messages) {
         ...messages
     ];
 
+    const prompt = conversation.map((m) => {
+        const prefix = m.role === 'assistant' ? 'Assistant' : m.role === 'system' ? 'System' : 'User';
+        return `${prefix}: ${m.content}`;
+    }).join('\n') + '\nAssistant:';
+
+    if (!CEREBRAS_API_KEY && !HUGGINGFACE_API_KEY) {
+        yield OFFLINE_RESPONSE;
+        return;
+    }
+
+    if (HUGGINGFACE_API_KEY) {
+        try {
+            const result = await queryHuggingFace(prompt);
+            yield result;
+            return;
+        } catch (error) {
+            console.warn('Hugging Face request failed, falling back to Cerebras or offline mode.', error);
+            if (!CEREBRAS_API_KEY) {
+                yield OFFLINE_RESPONSE;
+                return;
+            }
+        }
+    }
+
+    if (!CEREBRAS_API_KEY) {
+        yield OFFLINE_RESPONSE;
+        return;
+    }
+
     try {
         const response = await fetch(CEREBRAS_CHAT_COMPLETIONS_URL, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${API_KEY}`,
+                'Authorization': `Bearer ${CEREBRAS_API_KEY}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -127,7 +194,7 @@ export async function* streamCerebras(messages) {
             yield content;
         }
     } catch (error) {
-        const classified = classifyError(error);
-        throw classified;
+        console.warn('Cerebras request failed, falling back to offline mode.', error);
+        yield OFFLINE_RESPONSE;
     }
 }

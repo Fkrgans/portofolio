@@ -1,0 +1,240 @@
+1: import { useEffect, useState, useCallback, useRef } from 'react';
+2: import { Gsap, GsapPresence } from '../utils/gsapAnimate';
+3: import { createPortal } from 'react-dom';
+4: import {
+5:     X, Trophy, ChevronLeft, ChevronRight,
+6:     Github, Globe, Users, Zap, Shield,
+7:     Coins, Layers
+8: } from 'lucide-react';
+9: 
+10: /* ─── Image data (compressed WebP) ───────── */
+11: const galleryImages = [
+12:     { src: '/gambar1.png', alt: 'RSV Agro Hydroponic Dashboard - Overview' },
+13:     { src: '/gambar2.png', alt: 'RSV Agro Monitoring - Sensor status and controls' },
+14: ];
+15: 
+16: const techStack = ['React', 'Tailwind', 'Node.js', 'IoT', 'Dashboard'];
+17: 
+18: const highlights = [
+19:     { icon: Globe, label: 'Live Monitoring', desc: 'Real-time dashboard for hydroponic sensor telemetry.' },
+20:     { icon: Zap, label: 'Smart Automation', desc: 'Automatic pump and nutrient response for stable growth.' },
+21:     { icon: Shield, label: 'Reliable System', desc: 'Continuous monitoring with clear status and alerts.' },
+22:     { icon: Layers, label: 'Sensor Telemetry', desc: 'pH, PPM/EC, temperature, and humidity in one view.' },
+23:     { icon: Users, label: 'User-Friendly UI', desc: 'Responsive interface for easy monitoring on any device.' },
+24:     { icon: Coins, label: 'Resource Efficiency', desc: 'Optimizes water and nutrient use for healthy hydroponics.' },
+25: ];
+26: 
+27: const links = {
+28:     live: 'https://rsv-agro.onrender.com/',
+29:     github: 'https://github.com/Fkrgans',
+30: };
+31: 
+32: /* ─── Subcomponents ─────────────────────────────────────── */
+33: const TechBadge = ({ children }) => (
+34:     <span className="px-3 py-1.5 bg-black/5 font-mono text-[10px] md:text-xs font-bold uppercase tracking-wider text-black/80">
+35:         {children}
+36:     </span>
+37: );
+38: 
+39: /* ─── Image Carousel ────────────────────────────────────── */
+40: function ImageCarousel() {
+41:     const [current, setCurrent] = useState(0);
+42:     const [direction, setDirection] = useState(0);
+43:     const touchStart = useRef(null);
+44:     const len = galleryImages.length;
+45: 
+46:     const go = useCallback((dir) => {
+47:         setDirection(dir);
+48:         setCurrent(prev => (prev + dir + len) % len);
+49:     }, [len]);
+50: 
+51:     useEffect(() => {
+52:         const handler = (e) => {
+53:             if (e.key === 'ArrowLeft') go(-1);
+54:             if (e.key === 'ArrowRight') go(1);
+55:         };
+56:         window.addEventListener('keydown', handler);
+57:         return () => window.removeEventListener('keydown', handler);
+58:     }, [go]);
+59: 
+60:     const variants = {
+61:         enter: (dir) => ({ x: dir > 0 ? 300 : -300, opacity: 0 }),
+62:         center: { x: 0, opacity: 1 },
+63:         exit: (dir) => ({ x: dir > 0 ? -300 : 300, opacity: 0 }),
+64:     };
+65: 
+66:     const img = galleryImages[current];
+67: 
+68:     return (
+69:         <div className="relative w-full">
+70:             {/* Main image container */}
+71:             <div
+72:                 className="relative bg-neutral-100 overflow-hidden aspect-video border border-black/10 rounded-[2px]"
+73:                 onTouchStart={(e) => { touchStart.current = e.touches[0].clientX; }}
+74:                 onTouchEnd={(e) => {
+75:                     if (!touchStart.current) return;
+76:                     const diff = e.changedTouches[0].clientX - touchStart.current;
+77:                     if (Math.abs(diff) > 50) go(diff < 0 ? 1 : -1);
+78:                     touchStart.current = null;
+79:                 }}
+80:             >
+81:                 <GsapPresence initial={false} custom={direction} mode="wait">
+82:                     <Gsap.div
+83:                         key={current}
+84:                         custom={direction}
+85:                         variants={variants}
+86:                         initial="enter"
+87:                         animate="center"
+88:                         exit="exit"
+89:                         transition={{ duration: 0.35, ease: [0.33, 1, 0.68, 1] }}
+90:                         className="absolute inset-0"
+91:                     >
+92:                         <img
+93:                             src={img.src}
+94:                             alt={img.alt}
+95:                             loading="lazy"
+96:                             decoding="async"
+97:                             className="w-full h-full object-contain"
+98:                         />
+99:                     </Gsap.div>
+100:                 </GsapPresence>
+101: 
+102:                 {/* Nav arrows - Minimal styling */}
+103:                 <button
+104:                     onClick={(e) => { e.stopPropagation(); go(-1); }}
+105:                     className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full shadow-sm flex items-center justify-center hover:bg-white text-black/60 hover:text-black transition-all"
+106:                     aria-label="Previous image"
+107:                 >
+108:                     <ChevronLeft size={20} strokeWidth={2} />
+109:                 </button>
+110:                 <button
+111:                     onClick={(e) => { e.stopPropagation(); go(1); }}
+112:                     className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full shadow-sm flex items-center justify-center hover:bg-white text-black/60 hover:text-black transition-all"
+113:                     aria-label="Next image"
+114:                 >
+115:                     <ChevronRight size={20} strokeWidth={2} />
+116:                 </button>
+117: 
+118:                 {/* Counter */}
+119:                 <div className="absolute bottom-4 right-4 z-10 bg-black/40 backdrop-blur-md text-white px-3 py-1.5 rounded-full font-mono text-[10px] tracking-[0.12em] md:tracking-[0.16em] backdrop-saturate-150">
+120:                     {String(current + 1).padStart(2, '0')} / {String(len).padStart(2, '0')}
+121:                 </div>
+122:             </div>
+123: 
+124:             {/* Thumbnail strip */}
+125:             <div className="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide">
+126:                 {galleryImages.map((img, i) => (
+127:                     <button
+128:                         key={i}
+129:                         onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
+130:                         className={`
+131:                             shrink-0 w-20 h-14 md:w-24 md:h-16 rounded-[2px] overflow-hidden transition-all duration-300 relative
+132:                             ${i === current ? 'opacity-100 ring-2 ring-black ring-offset-2' : 'opacity-40 hover:opacity-100'}
+133:                         `}
+134:                     >
+135:                         <img src={img.src} alt="" className="w-full h-full object-cover" loading="lazy" />
+136:                     </button>
+137:                 ))}
+138:             </div>
+139:         </div>
+140:     );
+141: }
+142: 
+143: /* ─── Main Modal ────────────────────────────────────────── */
+144: export default function HackathonDetailModal({ isOpen, onClose }) {
+145:     // Lock body scroll
+146:     useEffect(() => {
+147:         if (!isOpen) return;
+148:         const prev = document.body.style.overflow;
+149:         document.body.style.overflow = 'hidden';
+150:         return () => { document.body.style.overflow = prev; };
+151:     }, [isOpen]);
+152: 
+153:     // Escape key
+154:     useEffect(() => {
+155:         if (!isOpen) return;
+156:         const handler = (e) => { if (e.key === 'Escape') onClose(); };
+157:         window.addEventListener('keydown', handler);
+158:         return () => window.removeEventListener('keydown', handler);
+159:     }, [isOpen, onClose]);
+160: 
+161:     return createPortal(
+162:         <GsapPresence>
+163:             {isOpen && (
+164:                 <div className="fixed inset-0 z-[9999] flex items-center justify-center p-0 md:p-6 lg:p-10">
+165:                     {/* Backdrop */}
+166:                     <Gsap.div
+167:                         initial={{ opacity: 0 }}
+168:                         animate={{ opacity: 1 }}
+169:                         exit={{ opacity: 0 }}
+170:                         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+171:                         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+172:                         onClick={onClose}
+173:                     />
+174: 
+175:                     {/* Modal content */}
+176:                     <Gsap.div
+177:                         initial={{ opacity: 0, y: 30, scale: 0.98 }}
+178:                         animate={{ opacity: 1, y: 0, scale: 1 }}
+179:                         exit={{ opacity: 0, y: 20, scale: 0.98 }}
+180:                         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+181:                         data-lenis-prevent
+182:                         className="relative z-10 w-full h-full md:h-auto md:max-h-[90vh] max-w-6xl bg-[#FAF9F6] shadow-2xl md:rounded-lg overflow-y-auto overscroll-contain flex flex-col"
+183:                         onClick={(e) => e.stopPropagation()}
+184:                     >
+185:                         {/* ── Sticky header ─────────────────────── */}
+186:                         <div className="sticky top-0 z-40 bg-[#FAF9F6]/90 backdrop-blur-md border-b border-black/5">
+187:                             <div className="px-6 md:px-10 py-4 flex items-center justify-between">
+188:                                 <div className="flex items-center gap-3">
+189:                                     <span className="font-mono text-[10px] uppercase font-bold tracking-[0.12em] md:tracking-[0.16em] text-[#000] flex items-center gap-2">
+190:                                         <Trophy size={14} className="text-lime-500" />
+191:                                         RSV Agro Hydro
+192:                                     </span>
+193:                                 </div>
+194:                                 <button
+195:                                     onClick={onClose}
+196:                                     className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300"
+197:                                     aria-label="Close"
+198:                                 >
+199:                                     <X size={18} />
+200:                                 </button>
+201:                             </div>
+202:                         </div>
+203: 
+204:                         {/* ── Content body ──────────────────────── */}
+205:                         <div className="px-6 md:px-10 pt-8 pb-20 space-y-16">
+206: 
+207:                             {/* Title block */}
+208:                             <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
+209:                                 <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] md:tracking-[0.26em] text-black/40 mb-4">
+210:                                         Smart Hydroponic IoT Monitoring
+211:                                     </p>
+212: 
+213:                                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.9] tracking-tighter text-black mb-6">
+214:                                         RSV <span className="text-transparent" style={{ WebkitTextStroke: '2px black' }}>AGRO</span>
+215:                                     </h1>
+216: 
+217:                                     <p className="text-base md:text-lg leading-7 md:leading-8 text-black/60 max-w-2xl mx-auto">
+218:                                         A smart hydroponic monitoring dashboard that connects sensor data, system controls, and environmental
+219:                                         status for real-time IoT-driven cultivation management.
+220:                                     </p>
+221: 
+222:                                 {/* Action links */}
+223:                                 <div className="mt-10 flex flex-wrap justify-center gap-4">
+224:                                     <a href={links.live} target="_blank" rel="noreferrer"
+225:                                         className="bg-lime-400 text-black px-8 py-3.5 font-bold uppercase text-xs tracking-wider hover:bg-black hover:text-white transition-all duration-300 rounded-[2px] flex items-center gap-2">
+226:                                         <Globe size={16} /> Play Live
+227:                                     </a>
+228:                                     <a href={links.github} target="_blank" rel="noreferrer"
+229:                                         className="bg-black/5 text-black px-8 py-3.5 font-bold uppercase text-xs tracking-wider border border-transparent hover:border-black/20 transition-all duration-300 rounded-[2px] flex items-center gap-2">
+230:                                         <Github size={16} /> Repository
+231:                                     </a>
+232:                                 </div>
+233:                             </div>
+234: 
+235:                             {/* Image gallery */}
+236:                             <div className="max-w-5xl mx-auto border border-black/5 p-2 bg-white rounded-lg shadow-sm">
+237:                                 <ImageCarousel />
+238:                             </div>
+239: 
+240:                             {/* Content grid */}

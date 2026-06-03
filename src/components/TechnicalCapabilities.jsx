@@ -1,15 +1,14 @@
 import { memo, useRef, useState, useEffect } from 'react';
 import { Gsap, useGsapInView } from '../utils/gsapAnimate';
-import { Cpu, Network, Eye, MessageSquare, Infinity, BarChart2, MonitorSmartphone } from 'lucide-react';
+import { Cpu, Network, Eye, MessageSquare, Infinity, BarChart2, MonitorSmartphone, Cloud, Workflow } from 'lucide-react';
 
 const CAPABILITIES = [
-  { title: 'Machine Learning', desc: 'Predictive modeling, regression, and algorithmic classification built for scale.', icon: BarChart2 },
-  { title: 'Deep Learning', desc: 'Neural architectures for complex pattern recognition and high-accuracy deployments.', icon: Network },
-  { title: 'Computer Vision', desc: 'Image processing, real-time object detection, and robust spatial analytics.', icon: Eye },
-  { title: 'NLP & GenAI', desc: 'Large language models, semantic analysis, and human-like conversational AI.', icon: MessageSquare },
-  { title: 'MLOps', desc: 'End-to-end model deployment frameworks, continuous monitoring, and automation.', icon: Infinity },
-  { title: 'Data Analysis', desc: 'Advanced statistical modeling, big data wrangling, and actionable visualizations.', icon: Cpu },
-  { title: 'Web Engineering', desc: 'Scalable full-stack systems with ultra-responsive, accessible interfaces.', icon: MonitorSmartphone },
+  { title: 'IoT & Embedded Systems', desc: 'Design dan integrasi sistem sensor dengan Arduino, ESP8266, dan ESP32 untuk monitoring real-time.', icon: Cpu },
+  { title: 'Computer Vision', desc: 'Deteksi objek realtime dan analisis ekspresi wajah menggunakan YOLOv8 dan OpenCV.', icon: Eye },
+  { title: 'Frontend Web', desc: 'Antarmuka modern, clean, dan responsif memakai HTML, CSS, Flask, dan Laravel.', icon: MonitorSmartphone },
+  { title: 'Cybersecurity Basics', desc: 'Dasar penetration testing dan vulnerability assessment untuk keamanan sistem.', icon: Network },
+  { title: 'Real-time Monitoring', desc: 'Integrasi data sensor ke dashboard web untuk pemantauan dan kontrol langsung.', icon: Cloud },
+  { title: 'Prototype Delivery', desc: 'Membawa solusi dari proof-of-concept menjadi demo kerja yang siap presentasi.', icon: Workflow },
 ];
 
 const TechnicalCapabilities = memo(function TechnicalCapabilities() {

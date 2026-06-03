@@ -30,59 +30,49 @@ import {
 } from "react-icons/si";
 
 // Lucide icons for generic concepts
-import { Bot, BrainCircuit, Workflow, Globe, Cloud } from "lucide-react";
+import { Bot, BrainCircuit, Workflow, Globe, Cloud, MonitorSmartphone } from 'lucide-react';
 
 const stackCategories = [
     {
-        title: "AI & Machine Learning",
-        description: "Intelligent systems & models",
+        title: "Embedded Systems",
+        description: "IoT boards & sensor integration",
+        skills: [
+            { name: "Arduino", icon: SiHtml5 },
+            { name: "NodeMCU", icon: SiJavascript },
+            { name: "ESP32", icon: SiPython },
+            { name: "Blynk", icon: Globe },
+            { name: "Thinger.io", icon: Cloud },
+        ]
+    },
+    {
+        title: "AI & Computer Vision",
+        description: "Vision systems & model inference",
         skills: [
             { name: "Python", icon: SiPython },
-            { name: "TensorFlow", icon: SiTensorflow },
-            { name: "PyTorch", icon: SiPytorch },
-            { name: "Keras", icon: SiKeras },
-            { name: "Scikit-Learn", icon: SiScikitlearn },
+            { name: "YOLOv8", icon: Bot },
             { name: "OpenCV", icon: SiOpencv },
-            { name: "Streamlit", icon: SiStreamlit },
-            { name: "Numpy", icon: SiNumpy },
-            { name: "Pandas", icon: SiPandas },
-            { name: "RAG", icon: BrainCircuit },
-            { name: "LLM", icon: Bot },
+            { name: "CNN", icon: BrainCircuit },
         ]
     },
     {
-        title: "Frontend Eng.",
-        description: "Interactive web interfaces",
+        title: "Web & Frameworks",
+        description: "Frontend modern web stacks",
         skills: [
-            { name: "React", icon: SiReact },
-            { name: "Next.js", icon: SiNextdotjs },
-            { name: "Tailwind CSS", icon: SiTailwindcss },
-            { name: "GSAP", icon: SiGreensock },
+            { name: "HTML5", icon: SiHtml5 },
+            { name: "CSS3", icon: SiTailwindcss },
             { name: "JavaScript", icon: SiJavascript },
-            { name: "HTML/CSS", icon: SiHtml5 },
+            { name: "Flask", icon: SiPython },
+            { name: "Laravel", icon: SiReact },
         ]
     },
     {
-        title: "Backend & API",
-        description: "Scalable server architectures",
+        title: "Security Basics",
+        description: "Keamanan sistem dan testing dasar",
         skills: [
-            { name: "FastAPI", icon: SiFastapi },
-            { name: "ExpressJS", icon: SiExpress },
-            { name: "PostgreSQL", icon: SiPostgresql },
-            { name: "MySQL", icon: SiMysql },
-            { name: "Supabase", icon: SiSupabase },
-            { name: "REST APIs", icon: Globe },
-        ]
-    },
-    {
-        title: "DevOps & Cloud",
-        description: "Infrastructure & deployment",
-        skills: [
-            { name: "Docker", icon: SiDocker },
-            { name: "Microsoft Azure", icon: Cloud },
-            { name: "MLOps", icon: Workflow },
+            { name: "Kali Linux", icon: SiLinux },
+            { name: "Penetration Testing", icon: Cloud },
+            { name: "Vulnerability Assessment", icon: MonitorSmartphone },
             { name: "Git", icon: SiGit },
-            { name: "Linux", icon: SiLinux },
         ]
     }
 ];

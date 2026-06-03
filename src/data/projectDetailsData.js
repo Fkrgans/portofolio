@@ -5,6 +5,64 @@
 // get pulled into the ChatWidget bundle.
 
 export const PROJECT_DETAILS_DATA = {
+  "flood-detection-system": {
+    title: "Portofolio 2",
+    category: "IoT & Embedded System",
+    tagline: "Sistem monitoring ketinggian air dan kendali pintu air otomatis untuk mitigasi banjir.",
+    year: "2025",
+    stack: ["Raspberry Pi 3", "Sensor Air", "Relay", "Python", "Automation"],
+    features: [
+      "Monitoring ketinggian air realtime dan trigger otomatis untuk pengendalian pintu air.",
+      "Integrasi sensor level, pompa, dan kontrol aktuator untuk respons cepat di kondisi kritis.",
+      "Dashboard ringkas untuk menampilkan kondisi terkini dan status sistem.",
+      "Desain sistem tahan kondisi lapangan untuk pemantauan lingkungan banjir.",
+    ],
+    impact: [
+      "Membantu mitigasi banjir dengan peringatan dini dan tindakan otomatis tanpa intervensi manual yang lambat.",
+      "Meningkatkan kecepatan respon terhadap kenaikan muka air di area rawan banjir.",
+    ],
+    links: {
+      repo: "",
+    },
+  },
+  "smart-scale": {
+    title: "Pendeteksi Objek",
+    category: "Computer Vision",
+    tagline: "Aplikasi deteksi objek real-time menggunakan YOLOv8 dan kamera untuk monitoring visual dan automasi.",
+    year: "2025",
+    stack: ["Python", "YOLOv8", "OpenCV", "React", "Webcam"],
+    features: [
+      "Deteksi objek secara real-time menggunakan model YOLOv8.",
+      "Tampilan video kamera dengan bounding box dan label objek yang jelas.",
+      "Respons cepat untuk berbagai kelas objek yang dilatih dalam model.",
+    ],
+    impact: [
+      "Meningkatkan sistem monitoring dengan informasi visual yang langsung dapat ditindaklanjuti.",
+      "Menyediakan demo AI vision yang mudah dipahami untuk pengguna dan pengunjung portofolio.",
+    ],
+    links: {
+      repo: "",
+    },
+  },
+  "ai-object-detection": {
+    title: "Timbangan Kopi IoT",
+    category: "IoT Monitoring",
+    tagline: "Sistem timbangan kopi IoT yang mengukur berat biji kopi secara real-time dan mengirim data ke dashboard.",
+    year: "2025",
+    stack: ["ESP32", "Load Cell", "MQTT", "React", "Dashboard"],
+    features: [
+      "Pengukuran berat kopi otomatis menggunakan sensor load cell.",
+      "Pengiriman data berat secara real-time ke dashboard web.",
+      "Notifikasi dan historikal berat untuk operasional kopi yang lebih presisi.",
+    ],
+    impact: [
+      "Membantu penyiapan kopi lebih konsisten dengan data berat yang akurat.",
+      "Memberikan bukti konsep IoT untuk aplikasi industri kopi dan produksi skala kecil.",
+    ],
+    links: {
+      repo: "",
+    },
+  },
   "diabetes-classification": {
     title: "Diabetes Classification",
     category: "AI / Machine Learning",
@@ -33,7 +91,7 @@ export const PROJECT_DETAILS_DATA = {
     ],
     links: {
       live: "https://diabetes-classificationn.streamlit.app/",
-      repo: "https://github.com/zickrian/Projek-Klasifikasi-Diabetes",
+      repo: "https://github.com/your-username/Projek-Klasifikasi-Diabetes",
     },
   },
   leadsup: {
@@ -57,7 +115,7 @@ export const PROJECT_DETAILS_DATA = {
       "Provides an easy-to-use MVP for daily sales workflow: ranking > contact > update status > monitor results.",
     ],
     links: {
-      repo: "https://github.com/zickrian/Predictive-Lead-Scoring-Portal-for-Banking",
+      repo: "https://github.com/your-username/Predictive-Lead-Scoring-Portal-for-Banking",
     },
   },
   polsekrembang: {
@@ -88,7 +146,7 @@ export const PROJECT_DETAILS_DATA = {
       "Enhances citizen experience with clear, consistent, and human-like responses - bringing public services closer through AI technology.",
     ],
     links: {
-      repo: "https://github.com/zickrian/chatbot_ai",
+      repo: "https://github.com/your-username/chatbot_ai",
     },
   },
   floodsegmen: {
@@ -123,7 +181,7 @@ export const PROJECT_DETAILS_DATA = {
       "Facilitates segmentation model evaluation through direct U-Net vs U-Net++ comparison to select the best approach.",
     ],
     links: {
-      repo: "https://github.com/zickrian/FloodSegmentationAPP",
+      repo: "https://github.com/your-username/FloodSegmentationAPP",
     },
   },
   qmeal: {
@@ -158,7 +216,7 @@ export const PROJECT_DETAILS_DATA = {
       "Provides vendor quality insights through ratings and purchase history, making user decisions more confident and data-driven.",
     ],
     links: {
-      repo: "https://github.com/zickrian/user-canteen",
+      repo: "https://github.com/your-username/user-canteen",
     },
   },
   lostandfound: {
@@ -185,7 +243,7 @@ export const PROJECT_DETAILS_DATA = {
       "Enhances system security and relevance as only Udinus students can access it via campus email authentication.",
     ],
     links: {
-      repo: "https://github.com/zickrian/LostItem-Project",
+      repo: "https://github.com/your-username/LostItem-Project",
     },
     notes: "Access Restricted: This website is only accessible using Udinus student email (@mhs.dinus.ac.id).",
   },
@@ -211,7 +269,7 @@ export const PROJECT_DETAILS_DATA = {
     ],
     links: {
       live: "https://vegetable-classifier.streamlit.app/",
-      repo: "https://github.com/zickrian/vegetable-classification",
+      repo: "https://github.com/your-username/vegetable-classification",
     },
   },
   "financial-assistant-bot": {
@@ -242,35 +300,33 @@ export const PROJECT_DETAILS_DATA = {
       "Helps users make better financial decisions through accurate spending data analysis.",
     ],
     links: {
-      live: "https://t.me/zickrian_bot",
-      repo: "https://github.com/zickrian/Accounting-Assistant",
+      live: "https://t.me/your-username_bot",
+      repo: "https://github.com/your-username/Accounting-Assistant",
     },
   },
   "base-realms": {
-    title: "Base Realms",
-    category: "Blockchain / Web3 Gaming",
+    title: "RSV Agro Hydro",
+    category: "IoT / Hydroponic Monitoring",
     tagline:
-      "An onchain 16-bit RPG battle game built on Base, where players mint characters, battle for seasonal rewards, and onboard into crypto through QRIS - no DeFi knowledge required.",
+      "A live hydroponic monitoring dashboard for smart agriculture, connecting sensors, system controls, and environment data in one place.",
     year: "2025",
-    stack: ["Solidity", "Next.js", "TypeScript", "JavaScript", "CSS"],
+    stack: ["React", "Tailwind", "Node.js", "IoT", "Dashboard"],
     features: [
-      "16-bit RPG-style onchain battle game with platformer-inspired gameplay.",
-      "QRIS payment integration: scan & pay with Indonesian QRIS - making crypto accessible to everyone.",
-      "Fair randomness through commit-reveal mechanics for verifiable battle outcomes.",
-      "ERC-721 + ERC-1155 token standards: unique characters and mintable/burnable game items.",
-      "Social onboarding: share battle progress on Farcaster & Base App for community engagement.",
-      "Multi-currency support: battle with ETH, USDC, or IDRX depending on player preference.",
+      "Real-time sensor telemetry for pH, EC/PPM, temperature, and humidity.",
+      "Smart automation controls to manage pumps and nutrient dosing based on thresholds.",
+      "Clear system status panels with alerts and remote monitoring.",
+      "Responsive dashboard optimized for desktop and mobile monitoring.",
+      "Integrated hydroponic performance tracking for more efficient crop management.",
     ],
     impact: [
-      "National Finalist at Base Indonesia Hackathon 2025.",
-      "Bridges the gap between crypto and non-crypto users through familiar Indonesian payment methods (QRIS).",
-      "Separates minting from gambling - fees go to liquidity pools, not random payout schemes.",
-      "Demonstrates transparent onchain reward distribution - automatic, auditable, and permissionless.",
+      "Improves crop health by making environmental conditions visible and actionable.",
+      "Reduces manual system checks with remote monitoring and alerting.",
+      "Helps growers optimize water and nutrient use through real-time analytics.",
     ],
     links: {
-      live: "https://baserealms.app/",
-      repo: "https://github.com/zickrian/Base-Realms",
+      live: "https://rsv-agro.onrender.com/",
+      repo: "https://github.com/Fkrgans/rfv_hydro",
     },
-    notes: "Achievement: National Finalist - Base Indonesia Hackathon 2025. Track: Base Track. Team: Terra Bit (Firdaus Khotibul Zickrian & Gagah Athallah Fatha).",
+    notes: "Project: RSV Agro Hydroponic Monitoring System. Live demo available at rsv-agro.onrender.com.",
   },
 };

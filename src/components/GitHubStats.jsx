@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { Gsap } from '../utils/gsapAnimate';
 import { Calendar, Code, ExternalLink, Users, Terminal } from 'lucide-react';
+import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-const GITHUB_USERNAME = 'zickrian';
-const GITHUB_PROFILE_URL = `https://github.com/${GITHUB_USERNAME}`;
+const GITHUB_RAW = PORTFOLIO_DATA.profile.socials.github || null;
+const GITHUB_USERNAME = GITHUB_RAW
+  ? GITHUB_RAW.replace(/(^https?:\/\/)?(www\.)?github\.com\//i, '').replace(/\/$/, '')
+  : null;
+const GITHUB_PROFILE_URL = GITHUB_RAW
+  ? (GITHUB_RAW.startsWith('http') ? GITHUB_RAW : `https://github.com/${GITHUB_RAW}`)
+  : 'https://github.com/';
 const HEATMAP_DAYS = 364;
 const COLS = 52;
 const ROWS = 7;
@@ -135,6 +141,10 @@ const GitHubStats = memo(function GitHubStats() {
         };
 
         const section = document.getElementById('github-stats-section');
+        if (!GITHUB_USERNAME) {
+            setLoading(false);
+            return;
+        }
         if (!section) { fetchData(); return; }
 
         const observer = new IntersectionObserver(

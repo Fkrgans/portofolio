@@ -1,8 +1,8 @@
-🖤 Ahmad Fikri — Professional Developer Portfolio
+🖤 Portfolio Pribadi — Professional Developer Portfolio
 
 📌 Ringkasan Singkat
 
-Selamat datang di repositori portofolio pribadi Ahmad Fikri. Portofolio ini dirancang dengan gaya Hitam Elegan & Putih (Minimalis Modern) untuk memamerkan keahlian dan proyek di bidang rekayasa teknologi, khususnya Internet of Things (IoT), Frontend Development, Artificial Intelligence (AI), dan fondasi Cybersecurity.
+Selamat datang di repositori portofolio pribadi. Portofolio ini dirancang dengan gaya Hitam Elegan & Putih (Minimalis Modern) untuk memamerkan keahlian dan proyek di bidang rekayasa teknologi, khususnya Internet of Things (IoT), Frontend Development, Artificial Intelligence (AI), dan fondasi Cybersecurity.
 
 🧠 Tech Stack & Instrumentasi
 
@@ -152,7 +152,7 @@ Ikuti langkah-langkah di bawah ini untuk memasang proyek di komputer Anda secara
 
 Clone Repositori
 
-git clone https://github.com/ahmadfikri/your-portfolio-repo.git
+git clone https://github.com/username/your-portfolio-repo.git
 cd Portfolio-dev
 
 

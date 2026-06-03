@@ -17,8 +17,8 @@ const Preloader = ({ onComplete }) => {
                     clearInterval(timer);
                     return 100;
                 }
-                // Random increment for "real" feel
-                const diff = Math.random() * 8;
+                // Random increment untuk memastikan progress selalu meningkat
+                const diff = 3 + Math.random() * 5;
                 return Math.min(prev + diff, 100);
             });
         }, 120); // Speed of counter
@@ -66,7 +66,7 @@ const Preloader = ({ onComplete }) => {
         >
             {/* Top Bar */}
             <div className="flex justify-between items-start uppercase text-xs md:text-sm tracking-widest opacity-50">
-                <span>Zickrian Portfolio</span>
+                <span>FKR-DEV</span>
                 <span>©2026</span>
             </div>
 

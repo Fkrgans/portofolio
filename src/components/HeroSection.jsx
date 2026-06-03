@@ -1,6 +1,7 @@
 import { memo, useRef, useState, useEffect } from 'react';
 import { Gsap, useGsapReducedMotion, useGsapScroll, useGsapTransform } from '../utils/gsapAnimate';
 import { Terminal, Code2, Database, Cpu, Download, ArrowUpRight } from 'lucide-react';
+import LightRays from './LightRays.jsx';
 
 // Shared Intl formatter — created once, reused on every tick
 const jakartaFormatter = new Intl.DateTimeFormat('en-US', {
@@ -28,14 +29,14 @@ const LocationTimeBadge = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-5 font-mono text-xs uppercase tracking-[0.15em] text-black/50">
+    <div className="flex items-center justify-center gap-3 sm:gap-5 font-mono text-xs uppercase tracking-[0.15em] text-slate-300/80">
       <div className="flex items-center gap-2">
-        <span className="font-bold text-black/70">Based in Indonesia</span>
+        <span className="font-bold text-slate-100">Based in Indonesia</span>
       </div>
-      <div className="w-[1px] h-3 bg-black/15" />
+      <div className="w-[1px] h-3 bg-slate-300/15" />
       <div className="flex items-center gap-1.5 tabular-nums">
-        <span className="text-black/40 hidden sm:inline">LOCAL:</span>
-        <span ref={timeRef} className="font-bold text-black/70" />
+        <span className="text-slate-300/50 hidden sm:inline">LOCAL:</span>
+        <span ref={timeRef} className="font-bold text-slate-100" />
       </div>
     </div>
   );
@@ -55,14 +56,14 @@ const OrbitingDecoration = ({ icon: Icon, delay, className, isRevealed, enableAm
       y: { duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] },
       scale: { duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] },
     }}
-    className={`absolute flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-lime-500/20 bg-white/60 backdrop-blur-lg shadow-[0_10px_30px_rgba(132,204,22,0.12)] ${className}`}
+    className={`absolute flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-slate-200/15 bg-slate-100/10 backdrop-blur-lg shadow-[0_10px_30px_rgba(255,255,255,0.12)] ${className}`}
     style={enableAmbientMotion && isRevealed ? {
       animation: `hero-float 5.8s ${delay + 0.35}s ease-in-out infinite`,
       willChange: 'transform',
     } : undefined}
   >
-    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-lime-300/25 to-transparent" />
-    <Icon size={18} className="relative text-black/65" />
+    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent" />
+    <Icon size={18} className="relative text-white" />
   </Gsap.div>
 );
 
@@ -116,7 +117,7 @@ const HeroSection = memo(function HeroSection({ isRevealed = true }) {
     <header
       ref={containerRef}
       id="hero-section"
-      className="min-h-[100svh] w-full relative bg-[#FAF9F6] selection:bg-lime-300 selection:text-black overflow-hidden flex flex-col items-center justify-center pt-16 pb-16"
+      className="min-h-[100svh] w-full relative bg-black selection:bg-slate-300/10 selection:text-slate-100 overflow-hidden flex flex-col items-center justify-center pt-16 pb-16"
     >
       {/* ── BACKGROUND ENGINEERING Grid & Dynamic Glow ── */}
       <Gsap.div
@@ -124,68 +125,22 @@ const HeroSection = memo(function HeroSection({ isRevealed = true }) {
         animate={isRevealed ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         style={enableParallax ? { y: bgY } : undefined}
-        className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center"
+        className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
       >
-
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(163,230,53,0.12),transparent_48%),linear-gradient(to_bottom,rgba(163,230,53,0.04),transparent_48%)]" />
-
-        {/* 1. Base Moving Grid */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: 'linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-            ...(enableAmbientMotion && isRevealed ? { animation: 'hero-grid-scroll 14s linear infinite' } : {}),
-          }}
-        />
-
-        {/* 2. Plus/Cross Pattern overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M40 38v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z' fill='%23000000' fill-opacity='1' fill-rule='nonzero'/%3E%3C/g%3E%3C/svg%3E")`,
-            backgroundPosition: 'center center'
-          }}
-        />
-
-        <div
+        <LightRays
           className="absolute inset-0"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 18% 18%, rgba(163, 230, 53, 0.14), transparent 44%), radial-gradient(circle at 82% 15%, rgba(132, 204, 22, 0.1), transparent 42%), radial-gradient(circle at 50% 85%, rgba(190, 242, 100, 0.09), transparent 50%), linear-gradient(135deg, rgba(163, 230, 53, 0.02), rgba(234, 179, 8, 0.01))'
-          }}
+          raysOrigin="top-center"
+          raysColor="#ffffff"
+          raysSpeed={1.4}
+          lightSpread={0.6}
+          rayLength={1.2}
+          followMouse={true}
+          mouseInfluence={0.3}
+          noiseAmount={0.07}
+          distortion={0.05}
+          fadeDistance={1.2}
+          saturation={1.2}
         />
-
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] h-[90vw] max-w-[920px] max-h-[920px] rounded-full border border-lime-500/10" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[72vw] h-[72vw] max-w-[720px] max-h-[720px] rounded-full border border-lime-500/10" />
-
-        {/* 3. Dynamic Organic Glowing Orbs — CSS animations for zero JS overhead */}
-        <div
-          className="absolute top-1/2 left-1/2 w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-lime-300 rounded-full blur-[90px] lg:blur-[130px] opacity-[0.1]"
-          style={enableAmbientMotion && isRevealed ? {
-            animation: 'hero-orb-1 10s ease-in-out infinite',
-            willChange: 'transform',
-          } : { transform: 'translate3d(-50%, -50%, 0)' }}
-        />
-        <div
-          className="absolute top-1/4 right-[20%] w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] bg-lime-400 rounded-full blur-[90px] lg:blur-[120px] opacity-[0.06]"
-          style={enableAmbientMotion && isRevealed ? {
-            animation: 'hero-orb-2 12s 2s ease-in-out infinite',
-            willChange: 'transform',
-          } : undefined}
-        />
-        <div
-          className="absolute bottom-[10%] left-[20%] w-[45vw] h-[45vw] max-w-[650px] max-h-[650px] bg-lime-200 rounded-full blur-[100px] lg:blur-[130px] opacity-[0.08]"
-          style={enableAmbientMotion && isRevealed ? {
-            animation: 'hero-orb-3 15s 1s ease-in-out infinite',
-            willChange: 'transform',
-          } : undefined}
-        />
-
-        {/* 4. Radial Vignette to blend gracefully with section edges */}
-        <div className="absolute inset-0 bg-[#FAF9F6] [mask-image:radial-gradient(circle_at_center,transparent_0%,black_100%)] opacity-75" />
-
-        {/* Soft bottom fade */}
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#FAF9F6] to-transparent pointer-events-none" />
       </Gsap.div>
 
       {/* ── MAIN CONTENT (PERFECTLY CENTERED) ── */}
@@ -230,18 +185,18 @@ const HeroSection = memo(function HeroSection({ isRevealed = true }) {
             initial={false}
             animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
             transition={{ duration: 0.75, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[clamp(4.25rem,14vw,9rem)] font-black uppercase tracking-tight text-black leading-[0.88]"
+            className="text-[clamp(4.25rem,14vw,9rem)] font-black uppercase tracking-tight text-slate-100 leading-[0.88]"
           >
-            FIRDAUS
+            AHMAD
           </Gsap.h1>
 
           <Gsap.h1
             initial={false}
             animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
             transition={{ duration: 0.75, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[clamp(4.25rem,14vw,9rem)] font-black uppercase tracking-tight text-transparent leading-[0.88] mt-2 sm:mt-0 font-outline-fallback"
+            className="text-[clamp(4.25rem,14vw,9rem)] font-black uppercase tracking-tight text-slate-100 leading-[0.88] mt-2 sm:mt-0 font-outline-fallback"
           >
-            ZICKRIAN
+            FIKRI
           </Gsap.h1>
 
           {/* Right Decoration */}
@@ -256,11 +211,11 @@ const HeroSection = memo(function HeroSection({ isRevealed = true }) {
           transition={{ delay: 0.38, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col items-center gap-2 mt-0"
         >
-          <h2 className="text-[clamp(1.35rem,4.2vw,2.25rem)] font-bold text-black/80 tracking-tight flex items-center justify-center flex-wrap gap-2 px-2">
-            Architecting <span className="bg-lime-400/30 px-2 rounded-md ring-1 ring-lime-500/20">Intelligent</span> Paradigms<span className="text-lime-500 font-extrabold -ml-1">.</span>
+          <h2 className="text-[clamp(1.35rem,4.2vw,2.25rem)] font-bold text-slate-100 tracking-tight flex items-center justify-center flex-wrap gap-2 px-2">
+            IoT, AI, & <span className="bg-lime-400/15 px-2 rounded-md ring-1 ring-lime-400/10 text-lime-400">Front-end</span> Systems<span className="text-lime-400 font-extrabold -ml-1">.</span>
           </h2>
-          <p className="font-sans text-base text-black/60 max-w-xl leading-7 mt-2 px-4">
-            AI Engineer & Full-Stack Developer specializing in high-performance, scalable systems.
+          <p className="font-sans text-base text-slate-300/70 max-w-xl leading-7 mt-2 px-4">
+            Lulusan SMK & mahasiswa Sistem Komputer yang bangun solusi IoT, Computer Vision, dan pengalaman web modern dengan vibe elegan dan to-the-point.
           </p>
         </Gsap.div>
 
@@ -273,14 +228,14 @@ const HeroSection = memo(function HeroSection({ isRevealed = true }) {
         >
           <button
             onClick={() => document.getElementById('project-section')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group flex items-center gap-2 bg-black text-white px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider hover:bg-lime-400 hover:text-black transition-all duration-300 cursor-pointer"
+            className="group flex items-center gap-2 bg-slate-900 text-slate-100 px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider hover:bg-lime-300 hover:text-slate-950 transition-all duration-300 cursor-pointer"
           >
             View Projects <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
           <a
             href="/cv.pdf"
             download
-            className="group flex items-center gap-2 bg-transparent text-black border-2 border-black px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider hover:bg-black hover:text-lime-400 transition-all duration-300"
+            className="group flex items-center gap-2 bg-transparent text-slate-100 border-2 border-slate-200/40 px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider hover:bg-slate-200 hover:text-slate-950 transition-all duration-300"
           >
             Download CV <Download size={16} className="group-hover:translate-y-0.5 transition-transform" />
           </a>

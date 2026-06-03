@@ -77,6 +77,7 @@ export default function ProjectGallery({ onOpenProject }) {
 
   const projects = PROJECT_META;
   const projectCount = projects.length;
+  const getProjectImage = (project) => project.img || project.thumbnail;
 
   useEffect(() => {
     if (!enablePinnedScroll) {
@@ -277,7 +278,7 @@ export default function ProjectGallery({ onOpenProject }) {
   // ── MOBILE LAYOUT ──
   if (!enablePinnedScroll) {
     return (
-      <section ref={sectionRef} className="relative bg-neutral-900 overflow-hidden py-16 pb-20">
+      <section ref={sectionRef} className="relative bg-[#050608] overflow-hidden py-16 pb-20">
         {/* Section Header */}
         <div className="px-6 mb-10">
           <div className="flex items-center gap-4 mb-10">
@@ -332,16 +333,16 @@ export default function ProjectGallery({ onOpenProject }) {
               {/* Image */}
               <div className="absolute inset-0 overflow-hidden">
                 <picture>
-                  <source
+                          <source
                     srcSet={[
-                      cloudinarySrc(project.img, 400) + ' 400w',
-                      cloudinarySrc(project.img, 800) + ' 800w',
+                      cloudinarySrc(getProjectImage(project), 400) + ' 400w',
+                      cloudinarySrc(getProjectImage(project), 800) + ' 800w',
                     ].join(', ')}
                     sizes="80vw"
                   />
                   <img
                     draggable="false"
-                    src={cloudinarySrc(project.img, 800)}
+                    src={cloudinarySrc(getProjectImage(project), 800)}
                     alt={project.title}
                     loading={index === 0 ? "eager" : "lazy"}
                     decoding="async"
@@ -389,7 +390,7 @@ export default function ProjectGallery({ onOpenProject }) {
 
   // ── DESKTOP LAYOUT (GSAP horizontal pinned scroll) ──
   return (
-    <section ref={sectionRef} className="relative bg-neutral-900 overflow-hidden h-[100dvh]">
+    <section ref={sectionRef} className="relative bg-[#050608] overflow-hidden h-[100dvh]">
 
       {/* Section Header */}
       <Gsap.div
@@ -416,7 +417,7 @@ export default function ProjectGallery({ onOpenProject }) {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col justify-center shrink-0 h-[70vh] w-[40vw]"
+            className="flex flex-col justify-center shrink-0 h-[70vh] w-[50vw]"
           >
             <h2 className="text-6xl lg:text-8xl font-black text-white uppercase leading-[0.92]">
               Past<br />
@@ -447,19 +448,19 @@ export default function ProjectGallery({ onOpenProject }) {
                 <picture>
                   <source
                     srcSet={[
-                      cloudinarySrc(project.img, 400) + ' 400w',
-                      cloudinarySrc(project.img, 800) + ' 800w',
-                      cloudinarySrc(project.img, 1200) + ' 1200w',
+                      cloudinarySrc(getProjectImage(project), 400) + ' 400w',
+                      cloudinarySrc(getProjectImage(project), 800) + ' 800w',
+                      cloudinarySrc(getProjectImage(project), 1200) + ' 1200w',
                     ].join(', ')}
                     sizes="45vw"
                   />
                   <img
                     draggable="false"
-                    src={cloudinarySrc(project.img, 800)}
+                    src={cloudinarySrc(getProjectImage(project), 800)}
                     srcSet={[
-                      cloudinarySrc(project.img, 400) + ' 400w',
-                      cloudinarySrc(project.img, 800) + ' 800w',
-                      cloudinarySrc(project.img, 1200) + ' 1200w',
+                      cloudinarySrc(getProjectImage(project), 400) + ' 400w',
+                      cloudinarySrc(getProjectImage(project), 800) + ' 800w',
+                      cloudinarySrc(getProjectImage(project), 1200) + ' 1200w',
                     ].join(', ')}
                     sizes="45vw"
                     alt={project.title}

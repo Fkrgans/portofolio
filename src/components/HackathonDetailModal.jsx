@@ -3,36 +3,30 @@ import { Gsap, GsapPresence } from '../utils/gsapAnimate';
 import { createPortal } from 'react-dom';
 import {
     X, Trophy, ChevronLeft, ChevronRight,
-    Github, Globe, Users, Zap, Shield, Gamepad2,
+    Github, Globe, Users, Zap, Shield,
     Coins, Layers
 } from 'lucide-react';
 
 /* ─── Image data (compressed WebP) ───────── */
 const galleryImages = [
-    { src: '/hackathon-base/base-realms-3.webp', alt: 'Base Realms - Onchain Battle Game on Base App' },
-    { src: '/hackathon-base/base-realms-2.webp', alt: 'QRIS Adoption - Normies Friendly Onboarding' },
-    { src: '/hackathon-base/base-realms-5.webp', alt: 'Just 5 Steps to Play' },
-    { src: '/hackathon-base/base-realms-6.webp', alt: 'Trade Collectibles & Mint NFTs' },
-    { src: '/hackathon-base/base-realms-4.webp', alt: 'System Architecture & Flow' },
-    { src: '/hackathon-base/base-realms-1.webp', alt: 'Team Information & Project Roadmap' },
+    { src: '/gambar1.png', alt: 'RSV Agro Hydroponic Dashboard - Overview' },
+    { src: '/gambar2.png', alt: 'RSV Agro Monitoring - Sensor status and controls' },
 ];
 
-const techStack = ['Solidity', 'Next.js', 'TypeScript', 'JavaScript', 'CSS'];
+const techStack = ['React', 'Tailwind', 'Node.js', 'IoT', 'Dashboard'];
 
 const highlights = [
-    { icon: Gamepad2, label: '16-bit RPG Gameplay', desc: 'Platformer-inspired onchain battle game' },
-    { icon: Coins, label: 'QRIS Payment', desc: 'Scan & pay with Indonesian QRIS - crypto for everyone' },
-    { icon: Shield, label: 'Fair Randomness', desc: 'Commit-reveal mechanics for verifiable outcomes' },
-    { icon: Layers, label: 'ERC-721 + ERC-1155', desc: 'Unique characters & mintable/burnable items' },
-    { icon: Users, label: 'Social Onboarding', desc: 'Share progress on Farcaster & Base App' },
-    { icon: Zap, label: 'Multi-Currency', desc: 'Battle with ETH, USDC, or IDRX' },
+    { icon: Globe, label: 'Live Monitoring', desc: 'Real-time dashboard for hydroponic sensor telemetry.' },
+    { icon: Zap, label: 'Smart Automation', desc: 'Automatic pump and nutrient response for stable growth.' },
+    { icon: Shield, label: 'Reliable System', desc: 'Continuous monitoring with clear status and alerts.' },
+    { icon: Layers, label: 'Sensor Telemetry', desc: 'pH, PPM/EC, temperature, and humidity in one view.' },
+    { icon: Users, label: 'User-Friendly UI', desc: 'Responsive interface for easy monitoring on any device.' },
+    { icon: Coins, label: 'Resource Efficiency', desc: 'Optimizes water and nutrient use for healthy hydroponics.' },
 ];
 
 const links = {
-    devfolio: 'https://devfolio.co/projects/base-realms-b63a',
-    github: 'https://github.com/zickrian/Base-Realms',
-    live: 'https://baserealms.app/',
-    docs: 'https://docs.google.com/document/d/1smjwXkiQOyB1mvwBO683Me2Dcbd6aGKBdlfJGjURSjU/edit?usp=sharing',
+    live: 'https://rsv-agro.onrender.com/',
+    github: 'https://github.com/Fkrgans',
 };
 
 /* ─── Subcomponents ─────────────────────────────────────── */
@@ -194,7 +188,7 @@ export default function HackathonDetailModal({ isOpen, onClose }) {
                                 <div className="flex items-center gap-3">
                                     <span className="font-mono text-[10px] uppercase font-bold tracking-[0.12em] md:tracking-[0.16em] text-[#000] flex items-center gap-2">
                                         <Trophy size={14} className="text-lime-500" />
-                                        National Finalist
+                                        RSV Agro Hydro
                                     </span>
                                 </div>
                                 <button
@@ -213,17 +207,17 @@ export default function HackathonDetailModal({ isOpen, onClose }) {
                             {/* Title block */}
                             <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
                                 <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] md:tracking-[0.26em] text-black/40 mb-4">
-                                    Base Indonesia Hackathon 2025
-                                </p>
+                                        Smart Hydroponic IoT Monitoring
+                                    </p>
 
-                                <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.9] tracking-tighter text-black mb-6">
-                                    BASE <span className="text-transparent" style={{ WebkitTextStroke: '2px black' }}>REALMS</span>
-                                </h1>
+                                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.9] tracking-tighter text-black mb-6">
+                                        RSV <span className="text-transparent" style={{ WebkitTextStroke: '2px black' }}>AGRO</span>
+                                    </h1>
 
-                                <p className="text-base md:text-lg leading-7 md:leading-8 text-black/60 max-w-2xl mx-auto">
-                                    An onchain 16-bit RPG battle game built on Base, where players mint characters, battle for seasonal rewards,
-                                    and onboard into crypto through QRIS - no DeFi knowledge required.
-                                </p>
+                                    <p className="text-base md:text-lg leading-7 md:leading-8 text-black/60 max-w-2xl mx-auto">
+                                        A smart hydroponic monitoring dashboard that connects sensor data, system controls, and environmental
+                                        status for real-time IoT-driven cultivation management.
+                                    </p>
 
                                 {/* Action links */}
                                 <div className="mt-10 flex flex-wrap justify-center gap-4">
@@ -253,9 +247,8 @@ export default function HackathonDetailModal({ isOpen, onClose }) {
                                             <span className="w-6 h-[1px] bg-black/20" /> The Problem
                                         </h2>
                                         <p className="text-base leading-relaxed text-black/80">
-                                            Most onchain applications push users toward speculative behavior - participation is tightly coupled with price movements,
-                                            token volatility, and trading risk. NFT-based games amplify this with opaque reward mechanics where minting,
-                                            randomness, and payouts are blended into a single flow.
+                                            Manual hydroponic monitoring makes it difficult to keep nutrient, pH, and climate variables in check,
+                                            so growers often miss critical warning signs and waste time checking the system in person.
                                         </p>
                                     </div>
 
@@ -265,10 +258,10 @@ export default function HackathonDetailModal({ isOpen, onClose }) {
                                         </h2>
                                         <ul className="space-y-4">
                                             {[
-                                                'Clear asset ownership with ERC-721 characters & ERC-1155 items.',
-                                                'Minting for ownership, not gambling - fees go to liquidity, not RNG payouts.',
-                                                'Battles as the economic engine - value from skill, not speculation.',
-                                                'QRIS onboarding for non-crypto users - scan, play, and learn crypto naturally.'
+                                                'Centralized dashboard for live hydroponic sensor telemetry and system status.',
+                                                'Smart automation for pump, nutrient, and climate control based on sensor thresholds.',
+                                                'Responsive monitoring that works on desktop and mobile for fast remote access.',
+                                                'Clear alerting and status panels so issues are visible before they affect crop health.'
                                             ].map((item, i) => (
                                                 <li key={i} className="flex gap-4">
                                                     <span className="mt-1.5 shrink-0 block w-1.5 h-1.5 bg-lime-500 rounded-full" />
@@ -304,10 +297,10 @@ export default function HackathonDetailModal({ isOpen, onClose }) {
                             {/* Footer links */}
                             <div className="max-w-5xl mx-auto border-t border-black/10 pt-12 flex flex-col md:flex-row items-center justify-between gap-6">
                                 <div className="flex items-center gap-3">
-                                    <span className="text-xs font-mono text-black/40 tracking-[0.12em] md:tracking-[0.16em]">TEAM:</span>
+                                    <span className="text-xs font-mono text-black/40 tracking-[0.12em] md:tracking-[0.16em]">PROJECT:</span>
                                     <div className="flex -space-x-2">
-                                        <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-[10px] font-mono text-white ring-2 ring-[#FAF9F6]">FZ</div>
-                                        <div className="w-8 h-8 rounded-full bg-neutral-600 flex items-center justify-center text-[10px] font-mono text-white ring-2 ring-[#FAF9F6]">GA</div>
+                                        <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-[10px] font-mono text-white ring-2 ring-[#FAF9F6]">RS</div>
+                                        <div className="w-8 h-8 rounded-full bg-neutral-600 flex items-center justify-center text-[10px] font-mono text-white ring-2 ring-[#FAF9F6]">AG</div>
                                     </div>
                                 </div>
 

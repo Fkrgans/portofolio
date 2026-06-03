@@ -28,8 +28,9 @@ const COMMANDS = {
             "  history    Command history",
             "  clear      Clear terminal",
             "  ──────────────────────────────",
+            "  FKR Bot is a terminal portfolio assistant for projects, skills, experience, and contact info.",
             "",
-            "  Or just ask me anything about Zickrian!"
+            "  Or just ask me anything about FKR Bot!"
         ].join('\n')
     },
     ls: {
@@ -60,7 +61,7 @@ const COMMANDS = {
             }
             return [
                 "        ╭──────────────────────╮",
-                "  ⣿⣿    │  zickrian@portfolio   │",
+                "  ⣿⣿    │  fkr_bot@portfolio   │",
                 "  ⣿⣿    ╰──────────────────────╯",
                 "  ⣿⣿    ─────────────────────────",
                 `  ⣿⣿    Name     : ${p.name}`,
@@ -82,7 +83,7 @@ const COMMANDS = {
     },
     whoami: {
         desc: "Current user",
-        run: () => "guest@portfolio-visitor"
+        run: () => "fkr_bot@portfolio-visitor"
     },
 };
 
@@ -175,7 +176,7 @@ const ChatWidget = ({ isOpen: controlledIsOpen, onOpenChange }) => {
     const isOpen = controlledIsOpen ?? internalIsOpen;
     const setIsOpen = onOpenChange ?? setInternalIsOpen;
     const [messages, setMessages] = useState([
-        { type: 'bot', text: "System Online. I'm Zickrian's AI Assistant. Type `help` for commands, or ask me anything!" }
+        { type: 'bot', text: "Sistem online. Aku FKR Bot, asisten terminal portofolio. Ketik `help` untuk command atau langsung tanya aja." }
     ]);
     const [inputValue, setInputValue] = useState("");
     const [isTyping, setIsTyping] = useState(false);
@@ -408,8 +409,8 @@ const ChatWidget = ({ isOpen: controlledIsOpen, onOpenChange }) => {
 
             const safeText = sanitizeAssistantResponse(fullText.trim())
                 || (lang === 'en'
-                    ? 'I can help with my portfolio projects, skills, and experience. Ask me anything there.'
-                    : 'Aku bisa bantu jawab soal portofolio, project, skill, dan pengalaman aku.');
+                    ? 'I can help with my portfolio projects, skills, and experience. Ask me anything or check the contact info in the footer.'
+                    : 'Aku bisa bantu jawab soal portofolio, project, skill, dan pengalaman aku. Cek juga kontak di footer kalau butuh hubungi aku.');
 
             await typewriteMessage(safeText, setMessages, forceScrollToBottom);
 
@@ -481,7 +482,7 @@ const ChatWidget = ({ isOpen: controlledIsOpen, onOpenChange }) => {
                                 <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
                                 <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
                             </div>
-                            <span className="ml-2 text-neutral-400 text-xs">zickrian_bot - -bash</span>
+                            <span className="ml-2 text-neutral-400 text-xs">fkr_bot - -bash</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="text-neutral-600 text-[10px] hidden md:inline">Ctrl+K</span>
