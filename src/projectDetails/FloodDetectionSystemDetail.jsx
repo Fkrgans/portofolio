@@ -3,7 +3,7 @@ import ProjectCaseLayout from "../components/projects/ProjectCaseLayout";
 export const project = {
   title: "Portofolio 2",
   category: "IoT & Embedded System",
-  heroImg: "/portofolio/portofolio2.jpg",
+  heroImg: `${import.meta.env.BASE_URL}portofolio2.jpg`,
   tagline:
     "Portofolio 2 adalah showcase proyek yang menampilkan kemampuan saya dalam membangun antarmuka web modern dan solusi IoT.",
   year: "2025",

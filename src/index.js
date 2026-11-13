@@ -31,7 +31,7 @@ root.render(
     null,
     React.createElement(
       BrowserRouter,
-      { basename: '/portofolio' },
+      { basename: import.meta.env.BASE_URL.replace(/\/$/, '') || '/' },
       React.createElement(App)
     )
   )

@@ -7,14 +7,15 @@ Personal portfolio site: React 19 + Vite 8 + Tailwind CSS 3, published as a GitH
 - Vite 8 requires Node `^20.19.0 || >=22.12.0`; use npm (`package-lock.json`).
 - `npm run dev` — binds `0.0.0.0`; open **http://localhost:5173/portofolio/** (`/` redirects there).
 - `npm run build` — production build into `build/` (not `dist/`). This is the only verification gate.
+- `npm run build:infinityfree` — root-domain build for static hosting such as InfinityFree; upload the contents of `build/` to `htdocs`.
 - `npm run preview` — serve the production build.
 - `npm run check` — build + `npm audit --omit=dev`; it is not a test suite.
 - No test runner, linter, formatter, or typecheck is configured. Do not invent `npm test` / `npm run lint`.
 
 ## Base path and deployment
 
-- `vite.config.js` sets `base: '/portofolio/'`; `src/index.js` sets `BrowserRouter basename='/portofolio'`. Keep them in sync.
-- Runtime asset URLs must include that prefix: `/portofolio/foo.jpg` or `` `${import.meta.env.BASE_URL}foo.jpg` ``. Root-absolute `/foo.jpg` breaks on the published site.
+- `vite.config.js` defaults to `base: '/portofolio/'` for GitHub Pages; `src/index.js` derives `BrowserRouter` basename from `import.meta.env.BASE_URL`.
+- Runtime asset URLs must derive from `import.meta.env.BASE_URL` so both GitHub Pages and root-domain static hosting work.
 - The `gh-pages` branch holds the built site; there is no CI or deploy workflow. `build/` is gitignored.
 - `gh-pages` has no `404.html` fallback, so client-side deep links do not survive reloads.
 

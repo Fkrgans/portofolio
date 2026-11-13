@@ -233,7 +233,7 @@ const HeroSection = memo(function HeroSection({ isRevealed = true }) {
             View Projects <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
           <a
-            href="/portofolio/cv.pdf"
+            href={`${import.meta.env.BASE_URL}cv.pdf`}
             download
             className="group flex items-center gap-2 bg-transparent text-slate-100 border-2 border-slate-200/40 px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider hover:bg-slate-200 hover:text-slate-950 transition-all duration-300"
           >

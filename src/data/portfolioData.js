@@ -97,11 +97,11 @@ export const PORTFOLIO_DATA = {
   ],
 
   assets: {
-    profileImage: "/portofolio/profile.jpeg",
+    profileImage: `${import.meta.env.BASE_URL}profile.jpeg`,
     projectImages: [
-      { slug: "flood-detection-system", path: "/portofolio/portofolio2.jpg" },
-      { slug: "smart-digital-scale", path: "/portofolio/deteksi_objek.jpg" },
-      { slug: "real-time-object-detection", path: "/portofolio/timbangan-kopi.jpeg" }
+      { slug: "flood-detection-system", path: `${import.meta.env.BASE_URL}portofolio2.jpg` },
+      { slug: "smart-digital-scale", path: `${import.meta.env.BASE_URL}deteksi_objek.jpg` },
+      { slug: "real-time-object-detection", path: `${import.meta.env.BASE_URL}timbangan-kopi.jpeg` }
     ]
   }
 };
