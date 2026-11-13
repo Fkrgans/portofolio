@@ -2,7 +2,7 @@
 
 export const PORTFOLIO_DATA = {
   profile: {
-    name: "Nama Anda",
+    name: "Fikri",
     studentId: "2411060013",
     university: "IIB Darmajaya",
     role: "IoT, Frontend, dan AI Engineer",
@@ -97,11 +97,11 @@ export const PORTFOLIO_DATA = {
   ],
 
   assets: {
-    profileImage: "/profile.jpeg",
+    profileImage: "/portofolio/profile.jpeg",
     projectImages: [
-      { slug: "flood-detection-system", path: "/assets/images/flood-detection-system.jpg" },
-      { slug: "smart-digital-scale", path: "/deteksi_objek.jpg" },
-      { slug: "real-time-object-detection", path: "/timbangan-kopi.jpeg" }
+      { slug: "flood-detection-system", path: "/portofolio/portofolio2.jpg" },
+      { slug: "smart-digital-scale", path: "/portofolio/deteksi_objek.jpg" },
+      { slug: "real-time-object-detection", path: "/portofolio/timbangan-kopi.jpeg" }
     ]
   }
 };

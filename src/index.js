@@ -31,7 +31,7 @@ root.render(
     null,
     React.createElement(
       BrowserRouter,
-      null,
+      { basename: '/portofolio' },
       React.createElement(App)
     )
   )

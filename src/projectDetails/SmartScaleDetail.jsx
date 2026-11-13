@@ -3,7 +3,7 @@ import ProjectCaseLayout from "../components/projects/ProjectCaseLayout";
 export const project = {
   title: "Pendeteksi Objek",
   category: "Computer Vision",
-  heroImg: "/deteksi_objek.jpg",
+  heroImg: "/portofolio/deteksi_objek.jpg",
   tagline:
     "Aplikasi deteksi objek real-time berbasis YOLOv8 untuk monitoring visual dan automasi.",
   year: "2025",

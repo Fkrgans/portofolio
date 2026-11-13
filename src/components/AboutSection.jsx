@@ -277,7 +277,7 @@ const AboutSection = memo(function AboutSection() {
               className="space-y-4 text-[15px] md:text-[15.5px] font-light text-black/60 leading-[1.88] max-w-[580px]"
             >
               <p>
-                Saya <strong className="text-black font-semibold">Nama Anda</strong>, mahasiswa Sistem Komputer IIB Darmajaya. Fokus saya di IoT, Computer Vision, dan frontend web yang clean serta responsif.
+                Saya <strong className="text-black font-semibold">Fikri</strong>, mahasiswa Sistem Komputer IIB Darmajaya. Fokus saya di IoT, Computer Vision, dan frontend web yang clean serta responsif.
               </p>
               <p>
                 Latar belakang SMK dan studi Sistem Komputer bikin saya nyaman bangun solusi embedded-to-web yang ringkas, solutif, dan punya sentuhan profesional.

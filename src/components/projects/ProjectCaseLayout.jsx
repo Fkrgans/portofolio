@@ -122,7 +122,7 @@ export default function ProjectCaseLayout({
                   alt={project.title}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover object-center"
                 />
               </div>
             </Gsap.div>

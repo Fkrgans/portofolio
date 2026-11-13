@@ -1,142 +1,209 @@
-import { useEffect, useState } from "react";
-import { Gsap } from "../utils/gsapAnimate";
+import { useEffect, useRef, useState } from "react";
+import { useGsapReducedMotion } from "../utils/gsapAnimate";
 
-const words = ["INITIALIZING", "LOADING ASSETS", "COMPILING", "READY"];
+const ASCII_WIDTH = 32;
+const ASCII_ROWS = 4;
+const ASCII_DURATION = 1800;
+const READY_HOLD = 450;
+const EXIT_DURATION = 700;
+const REDUCED_EXIT_DURATION = 200;
+
+const ASCII_FONT = '"JetBrains Mono", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
+
+function getStatus(progress) {
+    if (progress >= 100) return "READY";
+    if (progress >= 70) return "COMPILING";
+    if (progress >= 35) return "LOADING ASSETS";
+    return "INITIALIZING";
+}
 
 const Preloader = ({ onComplete }) => {
-    const [index, setIndex] = useState(0);
     const [progress, setProgress] = useState(0);
-    const [tick, setTick] = useState(0);
     const [isExiting, setIsExiting] = useState(false);
+    const reduceMotion = useGsapReducedMotion();
+
+    const onCompleteRef = useRef(onComplete);
+    const reduceMotionRef = useRef(reduceMotion);
+    const holdTimerRef = useRef(null);
+    const exitTimerRef = useRef(null);
 
     useEffect(() => {
-        // Progress counter animation
-        const timer = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(timer);
-                    return 100;
-                }
-                // Random increment untuk memastikan progress selalu meningkat
-                const diff = 3 + Math.random() * 5;
-                return Math.min(prev + diff, 100);
-            });
-        }, 120); // Speed of counter
+        onCompleteRef.current = onComplete;
+    }, [onComplete]);
 
-        // Tick for ASCII glitch/animation
-        const tickTimer = setInterval(() => setTick(t => t + 1), 60);
+    useEffect(() => {
+        reduceMotionRef.current = reduceMotion;
+    }, [reduceMotion]);
+
+    // Deterministic boot counter: no random jumps, no interval drift.
+    useEffect(() => {
+        let frame = null;
+        let start = null;
+        let last = -1;
+
+        const step = (timestamp) => {
+            if (start === null) start = timestamp;
+
+            const elapsed = timestamp - start;
+            const next = Math.min(100, Math.floor((elapsed / ASCII_DURATION) * 100));
+
+            if (next !== last) {
+                last = next;
+                setProgress(next);
+            }
+
+            if (elapsed < ASCII_DURATION) {
+                frame = requestAnimationFrame(step);
+            }
+        };
+
+        frame = requestAnimationFrame(step);
 
         return () => {
-            clearInterval(timer);
-            clearInterval(tickTimer);
+            if (frame) cancelAnimationFrame(frame);
         };
     }, []);
 
+    // Hold the finished state briefly, then hand control back to Home.
     useEffect(() => {
-        // Text cycle animation
-        if (index === words.length - 1) return;
+        if (progress < 100) return undefined;
 
-        const timeout = setTimeout(() => {
-            setIndex((prev) => prev + 1);
-        }, 550); // Speed of text change
+        const exitDuration = reduceMotionRef.current
+            ? REDUCED_EXIT_DURATION
+            : EXIT_DURATION;
 
-        return () => clearTimeout(timeout);
-    }, [index]);
+        holdTimerRef.current = window.setTimeout(() => {
+            setIsExiting(true);
 
-    useEffect(() => {
-        // Complete trigger
-        if (progress === 100) {
-            // Delay slightly to show "100%"
-            const timeout = setTimeout(() => {
-                setIsExiting(true);
-                setTimeout(onComplete, 800);
-            }, 800);
-            return () => clearTimeout(timeout);
-        }
-    }, [progress, onComplete]);
+            exitTimerRef.current = window.setTimeout(() => {
+                onCompleteRef.current?.();
+            }, exitDuration);
+        }, READY_HOLD);
+
+        return () => {
+            window.clearTimeout(holdTimerRef.current);
+            window.clearTimeout(exitTimerRef.current);
+        };
+    }, [progress]);
+
+    const status = getStatus(progress);
+    const isComplete = progress >= 100;
+    const filled = Math.floor((progress / 100) * ASCII_WIDTH);
+
+    // Keep the leading cell black so the lime bar has a visible cursor edge.
+    const fillCount = isComplete ? filled : Math.max(0, filled - 1);
+    const hasEdge = !isComplete && filled > 0;
+    const emptyCount = Math.max(0, ASCII_WIDTH - filled);
+
+    const exitClass = reduceMotion
+        ? (isExiting ? "opacity-0" : "opacity-100")
+        : (isExiting ? "-translate-y-full" : "translate-y-0");
 
     return (
         <div
-            className={`fixed inset-0 z-[9999] bg-black text-lime-400 flex flex-col justify-between p-4 md:p-10 font-mono overflow-hidden transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] ${isExiting ? '-translate-y-full' : 'translate-y-0'}`}
-            style={{
-                willChange: 'transform',
-                backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden',
-            }}
+            className={`fixed inset-0 z-[9999] flex flex-col justify-between overflow-hidden bg-[#FAF9F6] p-5 font-mono text-black sm:p-6 md:p-10 ${reduceMotion
+                ? "transition-opacity duration-200"
+                : "transition-transform duration-[700ms] ease-[cubic-bezier(0.76,0,0.24,1)]"
+                } ${exitClass}`}
+            style={{ willChange: reduceMotion ? "opacity" : "transform" }}
+            aria-busy="true"
         >
-            {/* Top Bar */}
-            <div className="flex justify-between items-start uppercase text-xs md:text-sm tracking-widest opacity-50">
-                <span>FKR-DEV</span>
-                <span>©2026</span>
-            </div>
-
-            {/* Center Content */}
-            <div className="flex flex-col items-center justify-center gap-6 w-full">
-                <Gsap.p
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="text-xl md:text-3xl font-bold tracking-widest uppercase text-lime-400"
-                >
-                    &gt; {words[index]}_
-                </Gsap.p>
-
-                {/* ASCII Art Container */}
-                <div className="text-lime-400 font-mono text-[10px] sm:text-xs md:text-sm leading-[1.1] md:leading-none whitespace-pre text-center md:text-left select-none overflow-hidden drop-shadow-[0_0_8px_rgba(163,230,53,0.5)]">
-                    {(() => {
-                        const width = typeof window !== 'undefined' && window.innerWidth < 768 ? 20 : 40;
-                        const filled = Math.floor((progress / 100) * width);
-                        let ascii = "";
-                        const fillChars = ['░', '▒', '▓', '█'];
-
-                        ascii += "╔" + "═".repeat(width) + "╗\n";
-                        for (let r = 0; r < 5; r++) {
-                            let row = "║";
-                            for (let c = 0; c < width; c++) {
-                                if (c < filled) {
-                                    if (c === filled - 1 && progress < 100) {
-                                        // Glitchy edge
-                                        row += fillChars[tick % 4];
-                                    } else {
-                                        row += '█';
-                                    }
-                                } else {
-                                    row += (tick % 2 === 0 && Math.random() > 0.9) ? '.' : ' ';
-                                }
-                            }
-                            row += "║\n";
-                            ascii += row;
-                        }
-                        ascii += "╚" + "═".repeat(width) + "╝\n";
-
-                        // System logs text below
-                        ascii += `\n>> SYS.MEM.${progress === 100 ? 'READY' : 'ALLOCATING'}  [${Math.round(progress).toString().padStart(3, '0')}%]`;
-                        if (progress === 100) {
-                            ascii += `  [OK]\n>> BOOT SEQUENCE COMPLETE.`;
-                        } else {
-                            ascii += `  [${fillChars[tick % 4]}]\n>> 0x${Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0').toUpperCase()} ...`;
-                        }
-                        return ascii;
-                    })()}
-                </div>
-            </div>
-
-            {/* Bottom Bar */}
-            <div className="flex justify-between items-end uppercase text-xs md:text-sm tracking-widest opacity-50 w-full">
-                <span>System Status: {progress === 100 ? 'ONLINE' : 'BOOTING'}</span>
-            </div>
-
-            {/* Background Grid */}
-            <div className="absolute inset-0 z-[-1] opacity-20 pointer-events-none"
+            {/* Faint technical grid, kept subtle so the white stays clean. */}
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 opacity-[0.55]"
                 style={{
-                    backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)',
-                    backgroundSize: '40px 40px'
+                    backgroundImage:
+                        "linear-gradient(rgba(10,10,10,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(10,10,10,0.05) 1px, transparent 1px)",
+                    backgroundSize: "40px 40px",
+                    maskImage: "linear-gradient(to bottom, black, transparent 92%)",
+                    WebkitMaskImage: "linear-gradient(to bottom, black, transparent 92%)",
                 }}
             />
 
-            {/* Scanline Effect */}
-            <div className="absolute inset-0 z-[10] pointer-events-none bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.1)_50%)] bg-[length:100%_4px]" />
+            {/* Top bar */}
+            <div className="relative z-10 flex items-start justify-between gap-4 text-[9px] uppercase tracking-[0.22em] text-black/55 sm:text-[10px] md:text-xs">
+                <span className="font-bold text-black/75">FKR-DEV</span>
+                <span>©2026</span>
+            </div>
+
+            {/* Center readout */}
+            <div className={`relative z-10 mx-auto flex w-full max-w-[520px] flex-col items-center gap-7 transition-opacity duration-300 sm:gap-8 ${isExiting && !reduceMotion ? "opacity-0" : "opacity-100"}`}>
+                <div className="w-full text-center">
+                    <p className="mb-4 text-[9px] uppercase tracking-[0.3em] text-black/45 sm:text-[10px]">
+                        Boot Sequence // 01
+                    </p>
+
+                    <div className="flex min-h-[2.75rem] items-center justify-center">
+                        <p className="text-sm font-bold uppercase tracking-[0.26em] text-black sm:text-base md:text-lg">
+                            <span aria-hidden="true">&gt; </span>
+                            {status}
+                            <span aria-hidden="true" className="ml-0.5 inline-block w-[0.6em] tracking-normal text-lime-600 motion-safe:animate-pulse">_</span>
+                        </p>
+                    </div>
+                </div>
+
+                {/* ASCII progress box */}
+                <div
+                    className="w-full"
+                    role="progressbar"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={progress}
+                    aria-label="Portfolio loading progress"
+                >
+                    <div
+                        aria-hidden="true"
+                        className="mx-auto w-fit select-none text-[10px] text-black/70 sm:text-xs md:text-base"
+                        style={{ fontFamily: ASCII_FONT, lineHeight: 1.15, letterSpacing: 0 }}
+                    >
+                        <div>┌{"─".repeat(ASCII_WIDTH)}┐</div>
+                        {Array.from({ length: ASCII_ROWS }).map((_, row) => (
+                            <div key={row}>
+                                <span>│</span>
+                                {fillCount > 0 && (
+                                    <span className="bg-lime-500 text-transparent">{"█".repeat(fillCount)}</span>
+                                )}
+                                {hasEdge && <span className="bg-black text-transparent">█</span>}
+                                <span className="text-black/20">{"·".repeat(emptyCount)}</span>
+                                <span>│</span>
+                            </div>
+                        ))}
+                        <div>└{"─".repeat(ASCII_WIDTH)}┘</div>
+                    </div>
+
+                    <div className="mt-5 flex items-end justify-between gap-4">
+                        <div className="text-[9px] uppercase tracking-[0.14em] text-black/55 sm:text-[10px]">
+                            <p>
+                                &gt;&gt; SYS.MEM.{isComplete ? "READY" : "ALLOCATING"}{" "}
+                                <span className="text-black/80">[{String(progress).padStart(3, "0")}%]</span>
+                            </p>
+                            <p className="mt-1">
+                                &gt;&gt; {isComplete ? "BOOT SEQUENCE COMPLETE." : "BOOT SEQUENCE IN PROGRESS..."}
+                            </p>
+                        </div>
+
+                        <span className="shrink-0 text-2xl font-black tabular-nums leading-none tracking-tight text-black sm:text-3xl md:text-4xl">
+                            {String(progress).padStart(3, "0")}
+                            <span className="ml-0.5 text-sm font-bold text-lime-600 sm:text-base">%</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Bottom bar */}
+            <div className="relative z-10 flex items-end justify-between gap-4 text-[9px] uppercase tracking-[0.2em] text-black/55 sm:text-[10px] md:text-xs">
+                <span className="flex items-center gap-2">
+                    <span className={`h-1.5 w-1.5 shrink-0 ${isComplete ? "bg-lime-500" : "bg-black/25"} ${!reduceMotion ? "motion-safe:animate-pulse" : ""}`} />
+                    System Status: {isComplete ? "ONLINE" : "BOOTING"}
+                </span>
+                <span className="text-right">{isComplete ? "READY" : "PLEASE WAIT"}</span>
+            </div>
+
+            {/* Lime edge that sweeps up with the panel. */}
+            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[2px] bg-lime-400" />
+
+            <p className="sr-only" aria-live="polite">{status}</p>
         </div>
     );
 };

@@ -6,24 +6,24 @@ export const PROJECT_META = [
     title: "Portofolio 2",
     slug: "flood-detection-system",
     category: "IoT & Embedded System",
-    img: "/portofolio2.jpg",
-    thumbnail: "/portofolio2.jpg"
+    img: "/portofolio/portofolio2.jpg",
+    thumbnail: "/portofolio/portofolio2.jpg"
   },
   {
     id: 2,
     title: "Pendeteksi Objek",
     slug: "smart-scale",
     category: "Computer Vision",
-    img: "/deteksi_objek.jpg",
-    thumbnail: "/deteksi_objek.jpg"
+    img: "/portofolio/deteksi_objek.jpg",
+    thumbnail: "/portofolio/deteksi_objek.jpg"
   },
   {
     id: 3,
     title: "Timbangan Kopi IoT",
     slug: "ai-object-detection",
     category: "IoT Monitoring",
-    img: "/timbangan-kopi.jpeg",
-    thumbnail: "/timbangan-kopi.jpeg"
+    img: "/portofolio/timbangan-kopi.jpeg",
+    thumbnail: "/portofolio/timbangan-kopi.jpeg"
   }
 ];
 

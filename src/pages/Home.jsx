@@ -13,7 +13,7 @@ const MarqueeBanner = lazy(() => import('../components/MarqueeBanner'));
 const AboutSection = lazy(() => import('../components/AboutSection'));
 const Footer = lazy(() => import('../components/Footer'));
 
-const ProjectGallery = lazy(() => import('../components/ProjectGallery'));
+const ExplorationGallery = lazy(() => import('../components/ExplorationGallery'));
 const GitHubStats = lazy(() => import('../components/GitHubStats'));
 const TechStack = lazy(() => import('../components/TechStack'));
 const NoiseOverlay = lazy(() => import('../components/NoiseOverlay'));
@@ -103,7 +103,7 @@ export default function Home() {
 
       <div id="project-section" ref={galleryRef} className="bg-[#050608]">
         <Suspense fallback={<div className="h-screen bg-[#050608]" />}>
-          <ProjectGallery onOpenProject={handleOpenProject} />
+          <ExplorationGallery onOpenProject={handleOpenProject} />
         </Suspense>
       </div>
 

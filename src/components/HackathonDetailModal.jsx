@@ -9,8 +9,8 @@ import {
 
 /* ─── Image data (compressed WebP) ───────── */
 const galleryImages = [
-    { src: '/gambar1.png', alt: 'RSV Agro Hydroponic Dashboard - Overview' },
-    { src: '/gambar2.png', alt: 'RSV Agro Monitoring - Sensor status and controls' },
+    { src: `${import.meta.env.BASE_URL}gambar1.png`, alt: 'RSV Agro Hydroponic Dashboard - Overview' },
+    { src: `${import.meta.env.BASE_URL}gambar2.png`, alt: 'RSV Agro Monitoring - Sensor status and controls' },
 ];
 
 const techStack = ['React', 'Tailwind', 'Node.js', 'IoT', 'Dashboard'];
@@ -94,7 +94,7 @@ function ImageCarousel() {
                             alt={img.alt}
                             loading="lazy"
                             decoding="async"
-                            className="w-full h-full object-contain"
+                            className="w-full h-full object-cover object-center"
                         />
                     </Gsap.div>
                 </GsapPresence>

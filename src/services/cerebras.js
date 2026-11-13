@@ -1,10 +1,16 @@
 import { generateSystemPrompt, buildScopedContext } from './aiContext';
 
-const CEREBRAS_API_KEY = (
+const CONFIGURED_CEREBRAS_KEY = (
     import.meta.env.VITE_CEREBRAS_API_KEY ||
     import.meta.env.REACT_APP_CEREBRAS_API_KEY ||
     ''
 ).trim();
+
+const OPENROUTER_API_KEY = (
+    import.meta.env.VITE_OPENROUTER_API_KEY ||
+    (CONFIGURED_CEREBRAS_KEY.startsWith('sk-or-') ? CONFIGURED_CEREBRAS_KEY : '')
+).trim();
+const CEREBRAS_API_KEY = OPENROUTER_API_KEY || CONFIGURED_CEREBRAS_KEY;
 
 const HUGGINGFACE_API_KEY = (
     import.meta.env.VITE_HUGGINGFACE_API_KEY ||
@@ -12,7 +18,10 @@ const HUGGINGFACE_API_KEY = (
 ).trim();
 
 const HUGGINGFACE_MODEL = import.meta.env.VITE_HUGGINGFACE_MODEL || 'gpt2';
-const CEREBRAS_CHAT_COMPLETIONS_URL = 'https://api.cerebras.ai/v1/chat/completions';
+const OPENROUTER_MODEL = import.meta.env.VITE_OPENROUTER_MODEL || 'openai/gpt-oss-120b';
+const CEREBRAS_CHAT_COMPLETIONS_URL = OPENROUTER_API_KEY
+    ? 'https://openrouter.ai/api/v1/chat/completions'
+    : 'https://api.cerebras.ai/v1/chat/completions';
 
 async function queryHuggingFace(prompt) {
     const response = await fetch(`https://api-inference.huggingface.co/models/${HUGGINGFACE_MODEL}`, {
@@ -144,7 +153,7 @@ export async function* streamCerebras(messages) {
         return `${prefix}: ${m.content}`;
     }).join('\n') + '\nAssistant:';
 
-    if (!CEREBRAS_API_KEY && !HUGGINGFACE_API_KEY) {
+    if (!OPENROUTER_API_KEY && !CEREBRAS_API_KEY && !HUGGINGFACE_API_KEY) {
         yield OFFLINE_RESPONSE;
         return;
     }
@@ -156,14 +165,14 @@ export async function* streamCerebras(messages) {
             return;
         } catch (error) {
             console.warn('Hugging Face request failed, falling back to Cerebras or offline mode.', error);
-            if (!CEREBRAS_API_KEY) {
+            if (!OPENROUTER_API_KEY && !CEREBRAS_API_KEY) {
                 yield OFFLINE_RESPONSE;
                 return;
             }
         }
     }
 
-    if (!CEREBRAS_API_KEY) {
+    if (!OPENROUTER_API_KEY && !CEREBRAS_API_KEY) {
         yield OFFLINE_RESPONSE;
         return;
     }
@@ -177,7 +186,7 @@ export async function* streamCerebras(messages) {
             },
             body: JSON.stringify({
                 messages: conversation,
-                model: "gpt-oss-120b",
+                model: OPENROUTER_API_KEY ? OPENROUTER_MODEL : "gpt-oss-120b",
                 max_tokens: 1024,
                 temperature: 0.35,
                 stream: true,
@@ -185,16 +194,25 @@ export async function* streamCerebras(messages) {
         });
 
         if (!response.ok) {
-            const error = new Error(`Cerebras API error: ${response.status}`);
+            const provider = OPENROUTER_API_KEY ? 'OpenRouter' : 'Cerebras';
+            const error = new Error(`${provider} API error: ${response.status}`);
             error.status = response.status;
             throw error;
         }
 
+        let receivedContent = false;
         for await (const content of parseOpenAICompatibleStream(response)) {
+            receivedContent = true;
             yield content;
         }
+        if (!receivedContent) {
+            throw new Error('AI provider returned no response content.');
+        }
     } catch (error) {
-        console.warn('Cerebras request failed, falling back to offline mode.', error);
-        yield OFFLINE_RESPONSE;
+        console.error('AI provider request failed.', error);
+        const classified = classifyError(error);
+        const reportedError = new Error(classified.message);
+        reportedError.type = classified.type;
+        throw reportedError;
     }
 }

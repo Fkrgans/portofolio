@@ -3,7 +3,7 @@ import ProjectCaseLayout from "../components/projects/ProjectCaseLayout";
 export const project = {
   title: "Timbangan Kopi IoT",
   category: "IoT Monitoring",
-  heroImg: "/timbangan-kopi.jpeg",
+  heroImg: "/portofolio/timbangan-kopi.jpeg",
   tagline:
     "Sistem timbangan kopi IoT yang mengukur berat biji kopi secara otomatis dan menampilkan data secara real-time.",
   year: "2025",
